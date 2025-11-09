@@ -1,6 +1,8 @@
 # Riot Account Manager
 
 [![GitHub](https://img.shields.io/badge/GitHub-Repository-blue?style=flat-square&logo=github)](https://github.com/DangNghia17/ChangeLogin_Account_RiotClient)
+[![Release](https://img.shields.io/badge/Release-v1.0.0-green?style=flat-square)](https://github.com/DangNghia17/ChangeLogin_Account_RiotClient/releases)
+[![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
 
 ## Introduction
 
@@ -45,9 +47,25 @@ Compared to manual login:
 - Open source (MIT License) - you can check
 - Only you have access to data on your computer
 
+## 📦 Download
+
+### Portable Version (Recommended)
+- **File:** `ChangeLogin_Account_RiotClient.Portable_Version.zip`
+- **Size:** ~26 MB
+- **Contents:** Application packaged with JRE, ready to use
+- **Target:** End users
+
+### Full Source Version
+- **File:** `ChangeLogin_Account_RiotClient_FullSource.zip`
+- **Size:** ~46 MB
+- **Contents:** Full source code and all dependencies
+- **Target:** Developers, contributors
+
+📥 **Download:** [Releases](https://github.com/DangNghia17/ChangeLogin_Account_RiotClient/releases)
+
 ## Installation
 
-1. Download ZIP file from [Releases](https://github.com/DangNghia17/ChangeLogin_Account_RiotClient/releases)
+1. Download **Portable Version** from [Releases](https://github.com/DangNghia17/ChangeLogin_Account_RiotClient/releases)
 2. Extract the ZIP file
 3. Run `RiotAccountManager.exe` (double-click)
 
