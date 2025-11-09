@@ -113,6 +113,32 @@ jar cfm RiotAccountManager.jar MANIFEST.MF -C build/classes .
 java -jar RiotAccountManager.jar
 ```
 
+### Building Executable (.exe)
+
+The application uses Launch4j to create a Windows executable. After building the JAR file, use Launch4j to create the `.exe`:
+
+1. **Requirements:**
+   - Launch4j installed
+   - Compiled JAR file
+   - Custom JRE runtime (created using `jlink`)
+
+2. **File Structure for Distribution:**
+   ```
+   RiotAccountManager/
+   ├── RiotAccountManager.exe    # Main executable (created by Launch4j)
+   ├── RiotAccountManager.jar    # JAR file (required by exe)
+   └── runtime/                  # Custom JRE folder (required by exe)
+       ├── bin/
+       ├── lib/
+       └── ...
+   ```
+
+3. **Important Notes:**
+   - The `.exe` file requires both the JAR file and `runtime/` folder in the same directory
+   - All three components (exe, jar, runtime) must be included when distributing
+   - The `runtime/` folder contains a custom JRE created with `jlink` (smaller than full JRE)
+   - Launch4j configuration is in `dist/launch4j-config.xml`
+
 ## Security
 
 ### Encryption

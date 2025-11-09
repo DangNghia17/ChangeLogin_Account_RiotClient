@@ -113,6 +113,32 @@ jar cfm RiotAccountManager.jar MANIFEST.MF -C build/classes .
 java -jar RiotAccountManager.jar
 ```
 
+### Build file thực thi (.exe)
+
+Ứng dụng sử dụng Launch4j để tạo file thực thi Windows. Sau khi build JAR file, sử dụng Launch4j để tạo `.exe`:
+
+1. **Yêu cầu:**
+   - Launch4j đã cài đặt
+   - File JAR đã được biên dịch
+   - Custom JRE runtime (tạo bằng `jlink`)
+
+2. **Cấu trúc file khi phân phối:**
+   ```
+   RiotAccountManager/
+   ├── RiotAccountManager.exe    # File thực thi chính (tạo bởi Launch4j)
+   ├── RiotAccountManager.jar    # File JAR (bắt buộc cho exe)
+   └── runtime/                  # Thư mục JRE tùy chỉnh (bắt buộc cho exe)
+       ├── bin/
+       ├── lib/
+       └── ...
+   ```
+
+3. **Lưu ý quan trọng:**
+   - File `.exe` yêu cầu cả file JAR và thư mục `runtime/` trong cùng một thư mục
+   - Cả 3 thành phần (exe, jar, runtime) phải được đóng gói khi phân phối
+   - Thư mục `runtime/` chứa JRE tùy chỉnh được tạo bằng `jlink` (nhỏ hơn JRE đầy đủ)
+   - Cấu hình Launch4j nằm trong `dist/launch4j-config.xml`
+
 ## Bảo mật
 
 ### Mã hóa

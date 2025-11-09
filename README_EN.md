@@ -49,8 +49,9 @@ Compared to manual login:
 
 1. Download ZIP file from [Releases](https://github.com/DangNghia17/ChangeLogin_Account_RiotClient/releases)
 2. Extract the ZIP file
-3. Run `RiotAccountManager.exe`
-4. **NO need to install Java!** (custom JRE included in runtime folder)
+3. Run `RiotAccountManager.exe` (double-click)
+
+**Note:** NO need to install Java, the application already includes JRE in the package.
 
 ## Usage Guide
 

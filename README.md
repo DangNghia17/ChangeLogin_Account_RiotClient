@@ -49,8 +49,9 @@ So với đăng nhập thủ công:
 
 1. Tải file ZIP từ [Releases](https://github.com/DangNghia17/ChangeLogin_Account_RiotClient/releases)
 2. Giải nén file ZIP
-3. Chạy `RiotAccountManager.exe`
-4. **KHÔNG cần cài Java!** (đã có custom JRE trong thư mục runtime)
+3. Chạy file `RiotAccountManager.exe` (double-click)
+
+**Lưu ý:** KHÔNG cần cài Java, ứng dụng đã có sẵn JRE trong package.
 
 ## Hướng dẫn sử dụng
 
