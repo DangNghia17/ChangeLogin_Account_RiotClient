@@ -3,9 +3,6 @@ package com.riotaccountmanager;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * Dialog thêm/sửa tài khoản
- */
 public class AccountDialog extends JDialog {
     private static final String[] REGIONS = {
         "VN", "NA", "EUW", "EUNE", "KR", "JP", "BR", "LAN", "LAS", "OCE", "RU", "TR"
@@ -23,12 +20,10 @@ public class AccountDialog extends JDialog {
         setLocationRelativeTo(parent);
         setResizable(false);
         
-        // Thêm icon
         UIHelper.setWindowIcon(this, "/change-user-icon.jpg");
         
         initializeUI(account);
         
-        // Set size sau khi đã add components
         pack();
         setSize(420, Math.max(getHeight(), 380));
         setLocationRelativeTo(parent);
@@ -45,7 +40,6 @@ public class AccountDialog extends JDialog {
         gbc.insets = new Insets(10, 12, 10, 12);
         gbc.anchor = GridBagConstraints.WEST;
         
-        // Username
         gbc.gridx = 0;
         gbc.gridy = 0;
         panel.add(UIHelper.createMaterialLabel(LanguageManager.getString("account.username") + ":"), gbc);
@@ -58,7 +52,6 @@ public class AccountDialog extends JDialog {
         }
         panel.add(usernameField, gbc);
         
-        // Password
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.fill = GridBagConstraints.NONE;
@@ -73,7 +66,6 @@ public class AccountDialog extends JDialog {
         }
         panel.add(passwordField, gbc);
         
-        // Region
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.fill = GridBagConstraints.NONE;
@@ -95,7 +87,6 @@ public class AccountDialog extends JDialog {
         }
         panel.add(regionCombo, gbc);
         
-        // Note (Ghi chú)
         gbc.gridx = 0;
         gbc.gridy = 3;
         gbc.fill = GridBagConstraints.NONE;
@@ -110,7 +101,6 @@ public class AccountDialog extends JDialog {
         }
         panel.add(noteField, gbc);
         
-        // Buttons
         gbc.gridx = 0;
         gbc.gridy = 4;
         gbc.gridwidth = 2;
@@ -139,7 +129,6 @@ public class AccountDialog extends JDialog {
         
         add(panel, BorderLayout.CENTER);
         
-        // Enter key để save
         getRootPane().setDefaultButton(saveButton);
     }
     
@@ -160,4 +149,3 @@ public class AccountDialog extends JDialog {
         return new Account(username, password, region, note);
     }
 }
-

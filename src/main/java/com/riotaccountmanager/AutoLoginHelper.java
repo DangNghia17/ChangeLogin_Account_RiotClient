@@ -6,16 +6,9 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 
-/**
- * Helper class để tự động đăng nhập vào Riot Client
- * Sử dụng Windows API chuẩn (Robot, Process) để tự động hóa
- */
 public class AutoLoginHelper {
     private static final int TIMEOUT_SECONDS = 30;
     
-    /**
-     * Kiểm tra Riot Client có đang chạy không (process)
-     */
     public static boolean isRiotClientRunning() {
         try {
             Process process = Runtime.getRuntime().exec("tasklist");
@@ -37,13 +30,8 @@ public class AutoLoginHelper {
         return false;
     }
     
-    /**
-     * Kiểm tra Riot Client window có đang hiển thị không
-     * Sử dụng Windows API để tìm window title chứa "Riot Client"
-     */
     public static boolean isRiotClientWindowVisible() {
         try {
-            // Sử dụng PowerShell để tìm window có title chứa "Riot Client"
             String command = "powershell -Command \"Get-Process | Where-Object {$_.MainWindowTitle -like '*Riot Client*' -or $_.MainWindowTitle -like '*Riot*'} | Select-Object -First 1 | ForEach-Object { $_.MainWindowTitle }\"";
             Process process = Runtime.getRuntime().exec(command);
             java.io.BufferedReader reader = new java.io.BufferedReader(
@@ -58,18 +46,12 @@ public class AutoLoginHelper {
                 return true;
             }
         } catch (Exception e) {
-            // Nếu PowerShell không hoạt động, fallback về check process
             System.out.println("Không thể kiểm tra window, sử dụng check process: " + e.getMessage());
         }
         return false;
     }
     
-    /**
-     * Lấy vị trí và kích thước cửa sổ Riot Client
-     * Trả về Rectangle chứa x, y, width, height của cửa sổ, hoặc null nếu không tìm thấy
-     */
     public static Rectangle getRiotClientWindowBounds() {
-        // Retry tối đa 3 lần
         for (int retry = 0; retry < 3; retry++) {
             try {
                 if (retry > 0) {
@@ -77,11 +59,9 @@ public class AutoLoginHelper {
                     Thread.sleep(500);
                 }
                 
-                // Tạo file PowerShell tạm để lấy thông tin cửa sổ
                 java.io.File tempScript = java.io.File.createTempFile("getRiotWindow", ".ps1");
                 tempScript.deleteOnExit();
                 
-                // Nội dung script PowerShell - cải thiện để lấy chính xác hơn (cùng logic với focusRiotClientWindow)
                 String scriptContent = 
                     "$ErrorActionPreference = 'Stop'\n" +
                     "# Tìm process Riot Client với logic ưu tiên (giống focusRiotClientWindow)\n" +
@@ -164,7 +144,6 @@ public class AutoLoginHelper {
                     "    # Process not found\n" +
                     "}\n";
                 
-                // Ghi script vào file với UTF-8 encoding
                 java.io.OutputStreamWriter writer = new java.io.OutputStreamWriter(
                     new java.io.FileOutputStream(tempScript), 
                     java.nio.charset.StandardCharsets.UTF_8
@@ -172,30 +151,25 @@ public class AutoLoginHelper {
                 writer.write(scriptContent);
                 writer.close();
                 
-                // Chạy script PowerShell
                 ProcessBuilder pb = new ProcessBuilder("powershell.exe", "-ExecutionPolicy", "Bypass", "-File", tempScript.getAbsolutePath());
                 pb.redirectErrorStream(true);
                 Process process = pb.start();
                 
-                // Đọc output từ stdout
                 java.io.BufferedReader reader = new java.io.BufferedReader(
-                    new java.io.InputStreamReader(process.getInputStream(), java.nio.charset.StandardCharsets.UTF_8)
+                    new java.io.InputStreamReader(process.getInputStream(),                     java.nio.charset.StandardCharsets.UTF_8)
                 );
                 
-                // Đọc tất cả các dòng từ stdout
                 String result = null;
                 String line;
                 while ((line = reader.readLine()) != null) {
                     line = line.trim();
-                    // Tìm dòng có format: số,số,số,số (ví dụ: 100,200,800,600)
                     if (line.matches("^-?\\d+,-?\\d+,-?\\d+,-?\\d+$")) {
                         result = line;
-                        break; // Chỉ lấy dòng đầu tiên có kết quả
+                        break;
                     }
                 }
                 reader.close();
                 
-                // Đợi process kết thúc
                 int exitCode = process.waitFor();
                 
                 if (result != null && !result.isEmpty()) {
@@ -207,7 +181,7 @@ public class AutoLoginHelper {
                             int width = Integer.parseInt(parts[2].trim());
                             int height = Integer.parseInt(parts[3].trim());
                             
-                            if (width > 100 && height > 100) { // Đảm bảo cửa sổ có kích thước hợp lý
+                            if (width > 100 && height > 100) {
                                 System.out.println("✓ Tìm thấy cửa sổ Riot Client: x=" + x + ", y=" + y + ", width=" + width + ", height=" + height);
                                 return new Rectangle(x, y, width, height);
                             } else {
@@ -233,17 +207,11 @@ public class AutoLoginHelper {
         return null;
     }
     
-    /**
-     * Focus vào cửa sổ Riot Client sử dụng Windows API
-     * Tìm chính xác cửa sổ Riot Client, ưu tiên theo MainWindowTitle và process name
-     */
     public static boolean focusRiotClientWindow() {
         try {
-            // Tạo file PowerShell tạm để focus cửa sổ
             java.io.File tempScript = java.io.File.createTempFile("focusRiotWindow", ".ps1");
             tempScript.deleteOnExit();
             
-            // Nội dung script PowerShell để focus cửa sổ - tìm chính xác hơn
             String scriptContent = 
                 "$ErrorActionPreference = 'Stop'\n" +
                 "# Tìm process Riot Client với logic ưu tiên:\n" +

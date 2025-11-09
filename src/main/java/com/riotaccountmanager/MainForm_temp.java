@@ -5,6 +5,9 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.io.File;
 
+/**
+ * Form chính của ứng dụng Riot Account Manager
+ */
 public class MainForm extends JFrame {
     private AccountManager accountManager;
     private JTable accountTable;
@@ -13,8 +16,9 @@ public class MainForm extends JFrame {
     private JButton loginButton;
     private JButton launchRiotClientButton;
     private JLabel riotClientStatusLabel;
-    private JLabel fullPathLabel;
+    private JLabel fullPathLabel; // Hiển thị đường dẫn đầy đủ (có thể wrap nhiều dòng)
     
+
     private JLabel titleLabel;
     private JLabel cardTitle;
     private JButton addButton;
@@ -31,6 +35,7 @@ public class MainForm extends JFrame {
         loadRiotClientPath();
         refreshAccountTable();
         
+
         if (WelcomeDialog.shouldShowWelcome()) {
             SwingUtilities.invokeLater(() -> {
                 WelcomeDialog welcomeDialog = new WelcomeDialog(this);
@@ -39,30 +44,45 @@ public class MainForm extends JFrame {
         }
     }
     
+    /**
+     * Khởi tạo giao diện
+     */
     private void initializeUI() {
         updateTitle();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
+
         setSize(430, 580);
         setResizable(true);
         setMinimumSize(new Dimension(350, 580));
         
+
         UIHelper.setWindowIcon(this, "/change-user-icon.jpg");
         
+
         setLayout(new BorderLayout(0, 0));
         getContentPane().setBackground(UITheme.BACKGROUND_COLOR);
         
+
         add(createHeaderPanel(), BorderLayout.NORTH);
         
+
         add(createAccountListPanel(), BorderLayout.CENTER);
         
+
         add(createConfigPanel(), BorderLayout.SOUTH);
     }
     
+    /**
+     * Cập nhật title của cửa sổ
+     */
     private void updateTitle() {
         setTitle(LanguageManager.getString("app.title"));
     }
     
+    /**
+     * Cập nhật tất cả text trong UI khi đổi ngôn ngữ
+     */
     private void updateUI() {
         updateTitle();
         if (titleLabel != null) {
@@ -92,6 +112,7 @@ public class MainForm extends JFrame {
         if (infoButton != null) {
             infoButton.setToolTipText(LanguageManager.getString("about.title"));
         }
+
         if (tableModel != null) {
             tableModel.setColumnIdentifiers(new Object[]{
                 LanguageManager.getString("account.table.username"),
@@ -99,24 +120,33 @@ public class MainForm extends JFrame {
                 LanguageManager.getString("account.table.note")
             });
         }
+
         updateRiotClientStatus();
+
         loadRiotClientPath();
+
         revalidate();
         repaint();
     }
     
+    /**
+     * Tạo header panel với gradient
+     */
     private JPanel createHeaderPanel() {
+
         GradientPanel titlePanel = new GradientPanel(
             UITheme.PRIMARY_GRADIENT_START, 
             UITheme.PRIMARY_GRADIENT_END
         );
         titlePanel.setLayout(new BorderLayout());
+
         titlePanel.setBorder(BorderFactory.createEmptyBorder(12, 16, 12, 20));
         titlePanel.setPreferredSize(new Dimension(0, 50));
         
         JPanel titleContent = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
         titleContent.setOpaque(false);
         
+
         ImageIcon icon = UIHelper.loadIcon("/change-user-icon.jpg", 24, 24);
         if (icon != null) {
             titleContent.add(new JLabel(icon));
@@ -128,15 +158,18 @@ public class MainForm extends JFrame {
         titleContent.add(titleLabel);
         titlePanel.add(titleContent, BorderLayout.WEST);
         
+
         JPanel rightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 6, 0));
         rightPanel.setOpaque(false);
         
+
         String[] languages = {"VI", "EN"};
         languageComboBox = new JComboBox<String>(languages);
         languageComboBox.setSelectedItem(LanguageManager.getCurrentLanguage().toUpperCase());
         languageComboBox.setFont(new Font(UITheme.FONT_FAMILY, Font.PLAIN, UITheme.FONT_SIZE_NORMAL - 2));
+
         languageComboBox.setPreferredSize(new Dimension(50, 28));
-        languageComboBox.setMaximumSize(new Dimension(50, 28));
+        languageComboBox.setMaximumSize(new Dimension(50, 28)); // Đảm bảo không mở rộng
         languageComboBox.setBackground(Color.WHITE);
         languageComboBox.setForeground(UITheme.TEXT_PRIMARY);
         languageComboBox.setBorder(BorderFactory.createCompoundBorder(
@@ -154,9 +187,11 @@ public class MainForm extends JFrame {
         });
         rightPanel.add(languageComboBox);
         
+
         infoButton = UIHelper.createIconButton("/information-button.png", 21, LanguageManager.getString("about.title"));
         infoButton.setBackground(new Color(0, 0, 0, 0));
         infoButton.setForeground(Color.WHITE);
+
         infoButton.setPreferredSize(new Dimension(24, 24));
         infoButton.setMaximumSize(new Dimension(24, 24));
         infoButton.setMinimumSize(new Dimension(24, 24));
@@ -165,6 +200,7 @@ public class MainForm extends JFrame {
             aboutDialog.setVisible(true);
         });
         
+
         infoButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 infoButton.setOpaque(true);
@@ -182,11 +218,16 @@ public class MainForm extends JFrame {
         return titlePanel;
     }
     
+    /**
+     * Tạo panel danh sách tài khoản
+     */
     private JPanel createAccountListPanel() {
         JPanel centerPanel = new JPanel(new BorderLayout(0, 0));
         centerPanel.setBackground(UITheme.BACKGROUND_COLOR);
+
         centerPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         
+
         JPanel cardPanel = new JPanel(new BorderLayout()) {
             @Override
             protected void paintComponent(Graphics g) {
@@ -203,8 +244,10 @@ public class MainForm extends JFrame {
         cardPanel.setOpaque(false);
         cardPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         
+
         JPanel cardHeader = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         cardHeader.setBackground(UITheme.SURFACE_COLOR);
+
         cardHeader.setBorder(BorderFactory.createEmptyBorder(8, 12, 6, 12));
         cardTitle = new JLabel(LanguageManager.getString("account.list.title"));
         cardTitle.setFont(new Font(UITheme.FONT_FAMILY_SEMIBOLD, Font.BOLD, UITheme.FONT_SIZE_TITLE));
@@ -212,6 +255,7 @@ public class MainForm extends JFrame {
         cardHeader.add(cardTitle);
         cardPanel.add(cardHeader, BorderLayout.NORTH);
         
+
         String[] columnNames = {
             LanguageManager.getString("account.table.username"),
             LanguageManager.getString("account.table.region"),
@@ -234,6 +278,7 @@ public class MainForm extends JFrame {
         accountTable.setShowHorizontalLines(true);
         accountTable.setShowVerticalLines(false);
         
+
         accountTable.getTableHeader().setFont(new Font(UITheme.FONT_FAMILY_SEMIBOLD, Font.PLAIN, UITheme.FONT_SIZE_NORMAL - 2));
         accountTable.getTableHeader().setBackground(UITheme.HEADER_BACKGROUND);
         accountTable.getTableHeader().setForeground(UITheme.TEXT_PRIMARY);
@@ -243,13 +288,16 @@ public class MainForm extends JFrame {
             BorderFactory.createEmptyBorder(8, 12, 8, 12)
         ));
         
+
         accountTable.setSelectionBackground(UITheme.TABLE_ROW_SELECTED);
         accountTable.setSelectionForeground(UITheme.TEXT_PRIMARY);
         
+
         accountTable.getColumnModel().getColumn(0).setPreferredWidth(120);
         accountTable.getColumnModel().getColumn(1).setPreferredWidth(60);
         accountTable.getColumnModel().getColumn(2).setPreferredWidth(150);
         
+
         accountTable.setDefaultRenderer(Object.class, new javax.swing.table.DefaultTableCellRenderer() {
             {
                 setBorder(BorderFactory.createEmptyBorder(8, 12, 8, 12));
@@ -265,6 +313,7 @@ public class MainForm extends JFrame {
                     c.setBackground(UITheme.TABLE_ROW_SELECTED);
                     c.setForeground(UITheme.TEXT_PRIMARY);
                 } else {
+
                     Point mousePos = table.getMousePosition();
                     if (mousePos != null) {
                         int hoverRow = table.rowAtPoint(mousePos);
@@ -283,6 +332,7 @@ public class MainForm extends JFrame {
             }
         });
         
+
         accountTable.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             @Override
             public void mouseMoved(java.awt.event.MouseEvent e) {
@@ -296,16 +346,20 @@ public class MainForm extends JFrame {
         scrollPane.setViewportBorder(null);
         cardPanel.add(scrollPane, BorderLayout.CENTER);
         
+
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 6, 6));
         buttonPanel.setBackground(UITheme.SURFACE_COLOR);
+
         buttonPanel.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createMatteBorder(1, 0, 0, 0, UITheme.DIVIDER_COLOR),
             BorderFactory.createEmptyBorder(8, 12, 8, 12)
         ));
         
+
         addButton = UIHelper.createIconButton("/add_account.png", 32, LanguageManager.getString("account.add"));
         editButton = UIHelper.createIconButton("/edit_account.png", 34, LanguageManager.getString("account.edit"));
         deleteButton = UIHelper.createIconButton("/delete_account.png", 32, LanguageManager.getString("account.delete"));
+
 
         loginButton = UIHelper.createIconButton("/login__account.png", 34, LanguageManager.getString("account.login"));
         
@@ -341,9 +395,11 @@ public class MainForm extends JFrame {
         buttonPanel.add(editButton);
         buttonPanel.add(deleteButton);
         
+
         JPanel separator = new JPanel();
         separator.setPreferredSize(new Dimension(1, 36));
         separator.setBackground(UITheme.DIVIDER_COLOR);
+
         separator.setBorder(BorderFactory.createEmptyBorder(0, 16, 0, 16));
         buttonPanel.add(separator);
         
@@ -354,11 +410,15 @@ public class MainForm extends JFrame {
         return centerPanel;
     }
     
+    /**
+     * Tạo panel cấu hình
+     */
     private JPanel createConfigPanel() {
         JPanel configPanel = new JPanel(new BorderLayout(0, 0));
         configPanel.setBackground(UITheme.BACKGROUND_COLOR);
         configPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
         
+
         JPanel configCard = new JPanel(new BorderLayout()) {
             @Override
             protected void paintComponent(Graphics g) {
@@ -386,12 +446,16 @@ public class MainForm extends JFrame {
             @Override
             public void setText(String text) {
                 super.setText(text);
+
                 if (text != null && text.length() > 0) {
+
                     SwingUtilities.invokeLater(() -> {
                         try {
                             setCaretPosition(0);
+
                             moveCaretPosition(0);
                         } catch (Exception e) {
+
                         }
                     });
                 }
@@ -400,6 +464,7 @@ public class MainForm extends JFrame {
             @Override
             public Dimension getPreferredSize() {
                 Dimension dim = super.getPreferredSize();
+
                 dim.width = Math.max(dim.width, 200);
                 return dim;
             }
@@ -412,9 +477,12 @@ public class MainForm extends JFrame {
             BorderFactory.createEmptyBorder(10, 12, 10, 12)
         ));
         riotClientPathField.setForeground(UITheme.TEXT_PRIMARY);
+
         riotClientPathField.setHorizontalAlignment(JTextField.LEFT);
+
         riotClientPathField.setFocusable(true);
         
+
         riotClientPathField.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -427,36 +495,47 @@ public class MainForm extends JFrame {
             }
         });
         
+
         browseButton = UIHelper.createMaterialButton(LanguageManager.getString("config.riot.path.select"), UITheme.BUTTON_GRAY);
         browseButton.setPreferredSize(new Dimension(80, 36));
         browseButton.addActionListener(e -> browseRiotClientPath());
         
+
         launchRiotClientButton = UIHelper.createMaterialButton(LanguageManager.getString("config.riot.client.open"), UITheme.PRIMARY_COLOR);
         launchRiotClientButton.setPreferredSize(new Dimension(130, 36));
         launchRiotClientButton.addActionListener(e -> launchRiotClient());
         
+
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
         buttonPanel.setBackground(UITheme.SURFACE_COLOR);
         buttonPanel.add(browseButton);
         buttonPanel.add(launchRiotClientButton);
         
+
         riotClientStatusLabel = new JLabel(LanguageManager.getString("config.riot.client.status.checking"));
         riotClientStatusLabel.setFont(new Font(UITheme.FONT_FAMILY, Font.PLAIN, UITheme.FONT_SIZE_NORMAL - 2));
         riotClientStatusLabel.setForeground(UITheme.TEXT_SECONDARY);
         riotClientStatusLabel.setBorder(BorderFactory.createEmptyBorder(6, 0, 0, 0));
         
+
+
         fullPathLabel = new JLabel() {
             @Override
             public Dimension getPreferredSize() {
                 Dimension dim = super.getPreferredSize();
+
+
                 Container parent = getParent();
                 if (parent != null) {
                     int parentWidth = parent.getWidth();
                     if (parentWidth > 0) {
+
                         dim.width = Math.max(150, parentWidth - 40);
                     } else {
+
                         Container grandParent = parent.getParent();
                         if (grandParent != null && grandParent.getWidth() > 0) {
+
                             dim.width = Math.max(150, grandParent.getWidth() - 120);
                         }
                     }
@@ -468,18 +547,28 @@ public class MainForm extends JFrame {
         fullPathLabel.setForeground(new Color(100, 100, 100));
         fullPathLabel.setBackground(UITheme.SURFACE_COLOR);
         fullPathLabel.setOpaque(false);
+
         fullPathLabel.setVerticalAlignment(JLabel.TOP);
         fullPathLabel.setVerticalTextPosition(JLabel.TOP);
         fullPathLabel.setBorder(BorderFactory.createEmptyBorder(4, 0, 0, 0));
+
+
         
+
+
         JPanel pathFieldPanel = new JPanel(new BorderLayout(0, 4));
         pathFieldPanel.setBackground(UITheme.SURFACE_COLOR);
         pathFieldPanel.add(riotClientPathField, BorderLayout.NORTH);
+
         pathFieldPanel.add(fullPathLabel, BorderLayout.CENTER);
         
+
+
         JPanel topRowPanel = new JPanel(new BorderLayout(8, 0));
         topRowPanel.setBackground(UITheme.SURFACE_COLOR);
+
         topRowPanel.add(pathFieldPanel, BorderLayout.CENTER);
+
         buttonPanel.setPreferredSize(new Dimension(
             browseButton.getPreferredSize().width + launchRiotClientButton.getPreferredSize().width + 16, 
             riotClientPathField.getPreferredSize().height));
@@ -502,18 +591,25 @@ public class MainForm extends JFrame {
         configCard.add(bottomPanel, BorderLayout.SOUTH);
         configPanel.add(configCard, BorderLayout.CENTER);
         
+
         updateRiotClientStatus();
         
+
         javax.swing.Timer statusTimer = new javax.swing.Timer(3000, e -> updateRiotClientStatus());
         statusTimer.start();
         
         return configPanel;
     }
     
+    /**
+     * Đặt cửa sổ ở góc phải trên
+     */
     private void setLocationToTopRight() {
+
+
         int width = getWidth();
         if (width <= 0) {
-            width = 380;
+            width = 380; // Size mặc định
         }
         
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -522,10 +618,16 @@ public class MainForm extends JFrame {
         setLocation(x, y);
     }
     
+    /**
+     * Hiển thị thông báo
+     */
     private void showMessage(String message, String title, int messageType) {
         JOptionPane.showMessageDialog(this, message, title, messageType);
     }
     
+    /**
+     * Hiển thị dialog thêm/sửa tài khoản
+     */
     private void showAddEditAccountDialog(Account account, int index) {
         AccountDialog dialog = new AccountDialog(this, account);
         dialog.setVisible(true);
@@ -546,6 +648,9 @@ public class MainForm extends JFrame {
         }
     }
     
+    /**
+     * Làm mới bảng tài khoản
+     */
     private void refreshAccountTable() {
         tableModel.setRowCount(0);
         for (Account account : accountManager.getAllAccounts()) {
@@ -557,22 +662,37 @@ public class MainForm extends JFrame {
         }
     }
     
+    /**
+     * Tải đường dẫn Riot Client
+     */
     private void loadRiotClientPath() {
         String path = ConfigManager.getRiotClientPath();
         updatePathDisplay(path);
     }
     
+    /**
+     * Cập nhật hiển thị đường dẫn
+     */
     private void updatePathDisplay(String path) {
         if (path != null && !path.isEmpty()) {
+
             java.io.File file = new java.io.File(path);
             String fileName = file.getName();
             riotClientPathField.setText(fileName);
             riotClientPathField.setHorizontalAlignment(JTextField.LEFT);
             riotClientPathField.setToolTipText(path);
+
             
+
+
+
             String escapedPath = path.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;");
+
+
+
             fullPathLabel.setText("<html><div style='word-wrap: break-word; word-break: break-all;'>" + escapedPath + "</div></html>");
             fullPathLabel.setToolTipText(path);
+
             SwingUtilities.invokeLater(() -> {
                 fullPathLabel.validate();
                 fullPathLabel.repaint();
@@ -586,6 +706,9 @@ public class MainForm extends JFrame {
         }
     }
     
+    /**
+     * Cập nhật trạng thái Riot Client (đang chạy/chưa chạy)
+     */
     private void updateRiotClientStatus() {
         new Thread(() -> {
             boolean isRunning = AutoLoginHelper.isRiotClientRunning();
@@ -597,6 +720,7 @@ public class MainForm extends JFrame {
                         riotClientStatusLabel.setText(LanguageManager.getString("config.riot.client.status.running"));
                         riotClientStatusLabel.setForeground(UITheme.SUCCESS_COLOR);
                     } else {
+
                         riotClientStatusLabel.setText(LanguageManager.getString("config.riot.client.status.running.tray"));
                         riotClientStatusLabel.setForeground(UITheme.SUCCESS_COLOR);
                     }
@@ -610,6 +734,9 @@ public class MainForm extends JFrame {
         }).start();
     }
     
+    /**
+     * Mở hoặc focus vào Riot Client
+     */
     private void launchRiotClient() {
         String clientPath = ConfigManager.getRiotClientPath();
         if (clientPath == null || clientPath.isEmpty()) {
@@ -627,6 +754,7 @@ public class MainForm extends JFrame {
                 boolean isWindowVisible = AutoLoginHelper.isRiotClientWindowVisible();
                 
                 if (isRunning && isWindowVisible) {
+
                     SwingUtilities.invokeLater(() -> {
                         riotClientStatusLabel.setText(LanguageManager.getString("config.riot.client.status.focusing"));
                     });
@@ -645,11 +773,13 @@ public class MainForm extends JFrame {
                         });
                     }
                 } else {
+
                     SwingUtilities.invokeLater(() -> {
                         riotClientStatusLabel.setText(LanguageManager.getString("config.riot.client.status.launching"));
                     });
                     
                     if (AutoLoginHelper.launchRiotClient(clientPath)) {
+
                         int maxWait = 30;
                         int waited = 0;
                         while (waited < maxWait) {
@@ -697,6 +827,9 @@ public class MainForm extends JFrame {
         }).start();
     }
     
+    /**
+     * Chọn đường dẫn Riot Client
+     */
     private void browseRiotClientPath() {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle(LanguageManager.getString("filechooser.riot.title"));
@@ -729,6 +862,7 @@ public class MainForm extends JFrame {
                 updatePathDisplay(path);
                 showMessage(LanguageManager.getString("config.riot.path.saved"), 
                     LanguageManager.getString("message.title"), JOptionPane.INFORMATION_MESSAGE);
+
                 updateRiotClientStatus();
             } else {
                 showMessage(LanguageManager.getString("config.riot.path.invalid"), 
@@ -737,6 +871,9 @@ public class MainForm extends JFrame {
         }
     }
     
+    /**
+     * Thực hiện đăng nhập
+     */
     private void performLogin() {
         int selectedRow = accountTable.getSelectedRow();
         if (selectedRow < 0) {
@@ -774,9 +911,12 @@ public class MainForm extends JFrame {
                     statusLabel.setText(LanguageManager.getString("login.progress.checking"));
                 });
                 
+
+
                 boolean isRunning = AutoLoginHelper.isRiotClientRunning();
                 boolean isWindowVisible = AutoLoginHelper.isRiotClientWindowVisible();
                 
+
                 if (!isRunning) {
                     SwingUtilities.invokeLater(() -> {
                         progressDialog.dispose();
@@ -787,14 +927,19 @@ public class MainForm extends JFrame {
                     return;
                 }
                 
+
+
                 if (!isWindowVisible) {
                     SwingUtilities.invokeLater(() -> {
                         statusLabel.setText(LanguageManager.getString("login.progress.restoring"));
                     });
+
                     if (!AutoLoginHelper.focusRiotClientWindow()) {
+
                         Thread.sleep(500);
                         AutoLoginHelper.focusRiotClientWindow();
                     }
+
                     Thread.sleep(800);
                 }
                 
@@ -802,6 +947,8 @@ public class MainForm extends JFrame {
                     statusLabel.setText(LanguageManager.getString("login.progress.ready"));
                 });
                 
+
+
                 String clientPath = ConfigManager.getRiotClientPath();
                 boolean success = AutoLoginHelper.autoLogin(account, clientPath != null ? clientPath : "");
                 
@@ -829,6 +976,9 @@ public class MainForm extends JFrame {
         }).start();
     }
     
+    /**
+     * Main method
+     */
     public static void main(String[] args) {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -838,6 +988,7 @@ public class MainForm extends JFrame {
         
         SwingUtilities.invokeLater(() -> {
             MainForm form = new MainForm();
+
             form.setLocationToTopRight();
             form.setVisible(true);
         });

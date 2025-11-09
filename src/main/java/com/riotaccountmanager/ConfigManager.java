@@ -5,17 +5,10 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-/**
- * Helper class để quản lý cấu hình ứng dụng
- * Lưu trữ đường dẫn Riot Client vào file config.json
- */
 public class ConfigManager {
     private static final String CONFIG_DIR = System.getenv("LOCALAPPDATA") + "\\RiotAccountManager";
     private static final String CONFIG_FILE = CONFIG_DIR + "\\config.json";
     
-    /**
-     * Đảm bảo thư mục cấu hình tồn tại
-     */
     private static void ensureConfigDir() {
         File dir = new File(CONFIG_DIR);
         if (!dir.exists()) {
@@ -23,9 +16,6 @@ public class ConfigManager {
         }
     }
     
-    /**
-     * Tìm đường dẫn Riot Client mặc định
-     */
     public static String findDefaultRiotClientPath() {
         String[] defaultPaths = {
             "C:\\Riot Games\\Riot Client\\RiotClientServices.exe",
@@ -43,13 +33,9 @@ public class ConfigManager {
         return null;
     }
     
-    /**
-     * Lấy đường dẫn Riot Client từ cấu hình
-     */
     public static String getRiotClientPath() {
         ensureConfigDir();
         
-        // Nếu file config không tồn tại, tìm đường dẫn mặc định
         File configFile = new File(CONFIG_FILE);
         if (!configFile.exists()) {
             String defaultPath = findDefaultRiotClientPath();
@@ -65,12 +51,10 @@ public class ConfigManager {
             JSONObject json = new JSONObject(content);
             String path = json.optString("riotClientPath", null);
             
-            // Validate đường dẫn
             if (path != null && new File(path).exists()) {
                 return path;
             }
             
-            // Nếu đường dẫn không hợp lệ, tìm lại đường dẫn mặc định
             String defaultPath = findDefaultRiotClientPath();
             if (defaultPath != null) {
                 setRiotClientPath(defaultPath);
@@ -84,9 +68,6 @@ public class ConfigManager {
         }
     }
     
-    /**
-     * Lưu đường dẫn Riot Client vào cấu hình
-     */
     public static void setRiotClientPath(String path) {
         ensureConfigDir();
         
@@ -102,9 +83,6 @@ public class ConfigManager {
         }
     }
     
-    /**
-     * Validate đường dẫn Riot Client
-     */
     public static boolean validateRiotClientPath(String path) {
         if (path == null || path.isEmpty()) {
             return false;
@@ -115,4 +93,3 @@ public class ConfigManager {
                path.toLowerCase().endsWith("riotclientservices.exe");
     }
 }
-

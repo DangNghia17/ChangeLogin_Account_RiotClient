@@ -3,25 +3,19 @@ package com.riotaccountmanager;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * Dialog hiển thị thông tin về ứng dụng
- */
 public class AboutDialog extends JDialog {
     
     public AboutDialog(JFrame parent) {
         super(parent, LanguageManager.getString("about.title"), true);
         setModalityType(ModalityType.APPLICATION_MODAL);
-        // Làm nhỏ lại: giảm từ 600x550 xuống 500x450
         setSize(500, 450);
         setLocationRelativeTo(parent);
         setResizable(false);
         
-        // Thêm icon
         UIHelper.setWindowIcon(this, "/change-user-icon.jpg");
         
         initializeUI();
         
-        // Scroll về đầu khi mở dialog
         SwingUtilities.invokeLater(() -> {
             JScrollPane scrollPane = findScrollPane(this);
             if (scrollPane != null) {
@@ -48,10 +42,8 @@ public class AboutDialog extends JDialog {
         
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBackground(UITheme.SURFACE_COLOR);
-        // Giảm padding để dialog nhỏ gọn hơn
         mainPanel.setBorder(BorderFactory.createEmptyBorder(16, 20, 16, 20));
         
-        // Header - căn giữa
         JPanel headerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         headerPanel.setBackground(UITheme.SURFACE_COLOR);
         headerPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 12, 0));
@@ -63,30 +55,23 @@ public class AboutDialog extends JDialog {
         
         mainPanel.add(headerPanel, BorderLayout.NORTH);
         
-        // Content - tất cả căn trái
         JPanel contentPanel = new JPanel();
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
         contentPanel.setBackground(UITheme.SURFACE_COLOR);
-        // Giảm padding
         contentPanel.setBorder(BorderFactory.createEmptyBorder(8, 0, 8, 8));
         
-        // 1. Giới thiệu ứng dụng
         addNumberedSection(contentPanel, 1, LanguageManager.getString("about.section1.title"), 
             LanguageManager.getString("about.section1.content"));
         
-        // 2. Hỗ trợ làm gì
         addNumberedSection(contentPanel, 2, LanguageManager.getString("about.section2.title"), 
             LanguageManager.getString("about.section2.content"));
         
-        // 3. Ảnh hưởng đến game
         addNumberedSection(contentPanel, 3, LanguageManager.getString("about.section3.title"), 
             LanguageManager.getString("about.section3.content"));
         
-        // 4. Bảo mật
         addNumberedSection(contentPanel, 4, LanguageManager.getString("about.section4.title"), 
             LanguageManager.getString("about.section4.content"));
         
-        // 5. Lợi ích
         addNumberedSection(contentPanel, 5, LanguageManager.getString("about.section5.title"), 
             LanguageManager.getString("about.section5.content"));
         
@@ -94,11 +79,9 @@ public class AboutDialog extends JDialog {
         scrollPane.setBorder(null);
         scrollPane.getViewport().setBackground(UITheme.SURFACE_COLOR);
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
-        // Đảm bảo scroll về đầu
         scrollPane.getVerticalScrollBar().setValue(0);
         mainPanel.add(scrollPane, BorderLayout.CENTER);
         
-        // Footer
         JPanel footerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         footerPanel.setBackground(UITheme.SURFACE_COLOR);
         footerPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
@@ -108,7 +91,6 @@ public class AboutDialog extends JDialog {
         versionLabel.setForeground(UITheme.TEXT_SECONDARY);
         footerPanel.add(versionLabel);
         
-        // Button đóng và hiển thị lại welcome - căn giữa
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 8, 0));
         buttonPanel.setBackground(UITheme.SURFACE_COLOR);
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(12, 0, 0, 0));
@@ -118,7 +100,6 @@ public class AboutDialog extends JDialog {
         showWelcomeButton.addActionListener(e -> {
             WelcomeDialog.resetWelcomePreference();
             dispose();
-            // Hiển thị welcome dialog ngay sau khi đóng AboutDialog
             SwingUtilities.invokeLater(() -> {
                 WelcomeDialog welcomeDialog = new WelcomeDialog((JFrame) getParent());
                 welcomeDialog.setVisible(true);
@@ -146,11 +127,9 @@ public class AboutDialog extends JDialog {
         JPanel section = new JPanel();
         section.setLayout(new BoxLayout(section, BoxLayout.Y_AXIS));
         section.setBackground(UITheme.SURFACE_COLOR);
-        // Giảm padding giữa các section
         section.setBorder(BorderFactory.createEmptyBorder(0, 0, 16, 0));
         section.setAlignmentX(Component.LEFT_ALIGNMENT);
         
-        // Title với số thứ tự - căn trái
         JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         titlePanel.setBackground(UITheme.SURFACE_COLOR);
         titlePanel.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -168,7 +147,6 @@ public class AboutDialog extends JDialog {
         
         section.add(titlePanel);
         
-        // Content - căn trái
         JTextArea contentArea = new JTextArea(content);
         contentArea.setFont(new Font(UITheme.FONT_FAMILY, Font.PLAIN, 11));
         contentArea.setForeground(UITheme.TEXT_PRIMARY);

@@ -3,9 +3,6 @@ package com.riotaccountmanager;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * Dialog chào mừng và hướng dẫn sử dụng lần đầu
- */
 public class WelcomeDialog extends JDialog {
     private static final String PREF_KEY = "welcome_shown";
     
@@ -15,12 +12,10 @@ public class WelcomeDialog extends JDialog {
         setLocationRelativeTo(parent);
         setResizable(false);
         
-        // Thêm icon
         UIHelper.setWindowIcon(this, "/change-user-icon.jpg");
         
         initializeUI();
         
-        // Đảm bảo dialog hiển thị đầy đủ
         pack();
         setSize(520, Math.max(getHeight(), 380));
         setLocationRelativeTo(parent);
@@ -33,20 +28,17 @@ public class WelcomeDialog extends JDialog {
         panel.setBackground(UITheme.SURFACE_COLOR);
         panel.setBorder(BorderFactory.createEmptyBorder(20, 24, 20, 24));
         
-        // Header
         JLabel titleLabel = new JLabel(LanguageManager.getString("app.welcome.title"), JLabel.CENTER);
         titleLabel.setFont(new Font(UITheme.FONT_FAMILY, Font.BOLD, 18));
         titleLabel.setForeground(UITheme.PRIMARY_COLOR);
         titleLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
         panel.add(titleLabel, BorderLayout.NORTH);
         
-        // Content - không dùng scroll, hiển thị đầy đủ
         JPanel contentPanel = new JPanel();
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
         contentPanel.setBackground(UITheme.SURFACE_COLOR);
         contentPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         
-        // Hướng dẫn - rút gọn để vừa màn hình
         String[] instructions = {
             LanguageManager.getString("app.welcome.instruction1"),
             LanguageManager.getString("app.welcome.instruction2"),
@@ -66,11 +58,10 @@ public class WelcomeDialog extends JDialog {
         
         panel.add(contentPanel, BorderLayout.CENTER);
         
-        // Buttons - ở dưới cùng, đảm bảo hiển thị đầy đủ
         JPanel buttonPanel = new JPanel(new BorderLayout(10, 0));
         buttonPanel.setBackground(UITheme.SURFACE_COLOR);
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(12, 0, 0, 0));
-        buttonPanel.setPreferredSize(new Dimension(0, 50)); // Đảm bảo có đủ chiều cao
+        buttonPanel.setPreferredSize(new Dimension(0, 50));
         
         JCheckBox dontShowAgain = new JCheckBox(LanguageManager.getString("app.welcome.dontShowAgain"));
         dontShowAgain.setFont(new Font(UITheme.FONT_FAMILY, Font.PLAIN, 11));
@@ -106,7 +97,6 @@ public class WelcomeDialog extends JDialog {
             java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(this.getClass());
             prefs.putBoolean(PREF_KEY, true);
         } catch (Exception e) {
-            // Bỏ qua nếu không lưu được
         }
     }
     
@@ -115,21 +105,16 @@ public class WelcomeDialog extends JDialog {
             java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(WelcomeDialog.class);
             return !prefs.getBoolean(PREF_KEY, false);
         } catch (Exception e) {
-            return true; // Mặc định hiển thị nếu có lỗi
+            return true;
         }
     }
     
-    /**
-     * Reset preference để hiển thị lại welcome dialog
-     */
     public static void resetWelcomePreference() {
         try {
             java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(WelcomeDialog.class);
             prefs.remove(PREF_KEY);
             prefs.flush();
         } catch (Exception e) {
-            // Bỏ qua nếu không xóa được
         }
     }
 }
-
