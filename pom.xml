@@ -67,7 +67,7 @@
                         <configuration>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.riotaccountmanager.MainForm</mainClass>
+                                    <mainClass>com.riotaccountmanager.App</mainClass>
                                 </transformer>
                             </transformers>
                             <filters>

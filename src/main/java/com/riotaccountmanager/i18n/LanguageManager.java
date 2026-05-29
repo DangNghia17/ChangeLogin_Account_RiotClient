@@ -1,4 +1,4 @@
-package com.riotaccountmanager;
+package com.riotaccountmanager.i18n;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -7,16 +7,25 @@ import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 
-public class LanguageManager {
+/**
+ * Multi-language support (VI/EN) backed by UTF-8 {@code .properties} resource bundles.
+ * The selected language is persisted via the Java Preferences API.
+ */
+public final class LanguageManager {
+
     private static final String PREF_KEY = "language";
     private static final String DEFAULT_LANGUAGE = "vi";
+
     private static ResourceBundle bundle;
     private static String currentLanguage = DEFAULT_LANGUAGE;
-    
+
     static {
         loadLanguage();
     }
-    
+
+    private LanguageManager() {
+    }
+
     private static void loadLanguage() {
         try {
             Preferences prefs = Preferences.userNodeForPackage(LanguageManager.class);
@@ -26,42 +35,26 @@ public class LanguageManager {
         }
         loadBundle();
     }
-    
+
     private static void loadBundle() {
-        try {
-            bundle = loadBundleForLanguage(currentLanguage);
-            if (bundle == null && !currentLanguage.equals(DEFAULT_LANGUAGE)) {
-                bundle = loadBundleForLanguage(DEFAULT_LANGUAGE);
-            }
-            if (bundle == null) {
-                System.err.println("Không thể load ResourceBundle cho ngôn ngữ: " + currentLanguage);
-            }
-        } catch (Exception e) {
-            System.err.println("Lỗi load ResourceBundle: " + e.getMessage());
-            e.printStackTrace();
-            bundle = null;
+        bundle = loadBundleForLanguage(currentLanguage);
+        if (bundle == null && !currentLanguage.equals(DEFAULT_LANGUAGE)) {
+            bundle = loadBundleForLanguage(DEFAULT_LANGUAGE);
         }
     }
-    
+
     private static ResourceBundle loadBundleForLanguage(String lang) {
-        try {
-            String resourceName = "messages_" + lang + ".properties";
-            InputStream stream = LanguageManager.class.getClassLoader().getResourceAsStream(resourceName);
+        String resourceName = "messages_" + lang + ".properties";
+        try (InputStream stream = LanguageManager.class.getClassLoader().getResourceAsStream(resourceName)) {
             if (stream != null) {
-                try {
-                    return new PropertyResourceBundle(new InputStreamReader(stream, StandardCharsets.UTF_8));
-                } finally {
-                    stream.close();
-                }
-            } else {
-                System.err.println("Không tìm thấy file: " + resourceName);
+                return new PropertyResourceBundle(new InputStreamReader(stream, StandardCharsets.UTF_8));
             }
         } catch (Exception e) {
-            System.err.println("Lỗi load bundle cho ngôn ngữ " + lang + ": " + e.getMessage());
+            System.err.println("Error loading resource bundle for " + lang + ": " + e.getMessage());
         }
         return null;
     }
-    
+
     public static String getString(String key) {
         if (bundle != null) {
             try {
@@ -72,15 +65,12 @@ public class LanguageManager {
         }
         return key;
     }
-    
+
     public static String getString(String key, Object... args) {
         String template = getString(key);
-        if (args.length > 0) {
-            return String.format(template, args);
-        }
-        return template;
+        return args.length > 0 ? String.format(template, args) : template;
     }
-    
+
     public static void setLanguage(String lang) {
         if (lang == null || lang.isEmpty()) {
             lang = DEFAULT_LANGUAGE;
@@ -90,15 +80,15 @@ public class LanguageManager {
             Preferences prefs = Preferences.userNodeForPackage(LanguageManager.class);
             prefs.put(PREF_KEY, lang);
             prefs.flush();
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
         loadBundle();
     }
-    
+
     public static String getCurrentLanguage() {
         return currentLanguage;
     }
-    
+
     public static boolean isVietnamese() {
         return "vi".equals(currentLanguage);
     }

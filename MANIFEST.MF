@@ -1,4 +1,2 @@
 Manifest-Version: 1.0
-Main-Class: com.riotaccountmanager.MainForm
-
-
+Main-Class: com.riotaccountmanager.App
