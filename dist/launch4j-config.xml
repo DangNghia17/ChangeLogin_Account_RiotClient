@@ -24,12 +24,12 @@
     <runtimeBits>64/32</runtimeBits>
   </jre>
   <versionInfo>
-    <fileVersion>1.0.0.0</fileVersion>
-    <txtFileVersion>1.0.0</txtFileVersion>
+    <fileVersion>2.0.0.0</fileVersion>
+    <txtFileVersion>2.0.0</txtFileVersion>
     <fileDescription>Riot Account Manager</fileDescription>
     <copyright>MIT License</copyright>
-    <productVersion>1.0.0.0</productVersion>
-    <txtProductVersion>1.0.0</txtProductVersion>
+    <productVersion>2.0.0.0</productVersion>
+    <txtProductVersion>2.0.0</txtProductVersion>
     <productName>Riot Account Manager</productName>
     <companyName>Riot Account Manager</companyName>
     <internalName>RiotAccountManager</internalName>
