@@ -93,7 +93,7 @@ Lệnh này tự chạy `npm run build` trước, rồi đóng gói Rust + WebVi
 ### Output ở đâu?
 
 ```
-app-tauri/src-tauri/target/release/
+app-tauri/target/release/
 ├── RiotAccountManager.exe              # portable (chạy trực tiếp)
 └── bundle/
     ├── nsis/RiotAccountManager_x.x.x_x64-setup.exe   # installer NSIS

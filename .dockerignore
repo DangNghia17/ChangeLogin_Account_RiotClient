@@ -3,7 +3,7 @@
 node_modules
 app-tauri/node_modules
 app-tauri/dist
-app-tauri/src-tauri/target
+app-tauri/target
 runtime
 src
 dist

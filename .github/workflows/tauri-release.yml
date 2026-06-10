@@ -36,8 +36,8 @@ jobs:
           path: |
             ~/.cargo/registry
             ~/.cargo/git
-            app-tauri/src-tauri/target
-          key: ${{ runner.os }}-cargo-${{ hashFiles('app-tauri/src-tauri/Cargo.lock', 'app-tauri/Cargo.lock') }}
+            app-tauri/target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('app-tauri/Cargo.lock') }}
 
       - name: Install frontend deps
         run: npm ci
@@ -48,9 +48,12 @@ jobs:
       - name: Create portable ZIP
         shell: pwsh
         run: |
-          $exe = Get-ChildItem -Recurse -Path src-tauri/target/release -Filter "RiotAccountManager.exe" |
+          # Cargo workspace puts target/ at app-tauri/target (not src-tauri/target).
+          $release = Join-Path (Get-Location) "target/release"
+          if (-not (Test-Path $release)) { throw "release dir not found: $release" }
+          $exe = Get-ChildItem -Path $release -Filter "RiotAccountManager.exe" |
             Where-Object { $_.FullName -notmatch "deps" } | Select-Object -First 1
-          if ($null -eq $exe) { throw "portable exe not found" }
+          if ($null -eq $exe) { throw "portable exe not found under $release" }
           New-Item -ItemType Directory -Force -Path portable | Out-Null
           Copy-Item $exe.FullName portable/
           Compress-Archive -Path portable/* -DestinationPath "RiotAccountManager-portable.zip" -Force
@@ -60,8 +63,8 @@ jobs:
         with:
           name: RiotAccountManager-windows
           path: |
-            app-tauri/src-tauri/target/release/bundle/nsis/*.exe
-            app-tauri/src-tauri/target/release/bundle/msi/*.msi
+            app-tauri/target/release/bundle/nsis/*.exe
+            app-tauri/target/release/bundle/msi/*.msi
             app-tauri/RiotAccountManager-portable.zip
           if-no-files-found: warn
 
@@ -70,6 +73,6 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            app-tauri/src-tauri/target/release/bundle/nsis/*.exe
-            app-tauri/src-tauri/target/release/bundle/msi/*.msi
+            app-tauri/target/release/bundle/nsis/*.exe
+            app-tauri/target/release/bundle/msi/*.msi
             app-tauri/RiotAccountManager-portable.zip

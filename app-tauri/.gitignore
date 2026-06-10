@@ -2,8 +2,8 @@
 node_modules/
 dist/
 
-# Tauri / Rust
-src-tauri/target/
+# Tauri / Rust (Cargo workspace target at app-tauri/target)
+target/
 src-tauri/gen/
 
 # Logs / env

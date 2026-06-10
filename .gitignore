@@ -33,5 +33,5 @@ node_modules/
 app-tauri/node_modules/
 app-tauri/dist/
 app-tauri/target/
-app-tauri/src-tauri/target/
+app-tauri/target/
 app-tauri/RiotAccountManager-portable.zip

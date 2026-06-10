@@ -126,9 +126,9 @@ npm run tauri:build
 ```
 
 **Output:**
-- `app-tauri/src-tauri/target/release/RiotAccountManager.exe` (portable)
-- `app-tauri/src-tauri/target/release/bundle/nsis/*.exe` (installer)
-- `app-tauri/src-tauri/target/release/bundle/msi/*.msi` (installer)
+- `app-tauri/target/release/RiotAccountManager.exe` (portable)
+- `app-tauri/target/release/bundle/nsis/*.exe` (installer)
+- `app-tauri/target/release/bundle/msi/*.msi` (installer)
 
 Hoặc push tag `vX.Y.Z` → CI build NSIS/MSI/portable tự động.
 

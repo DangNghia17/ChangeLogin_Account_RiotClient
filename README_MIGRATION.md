@@ -122,7 +122,7 @@ npm run tauri build
 
 ## Cách đóng gói
 
-`npm run tauri build` (trên Windows) tạo trong `app-tauri/src-tauri/target/release/`:
+`npm run tauri build` (trên Windows) tạo trong `app-tauri/target/release/`:
 - `bundle/nsis/*.exe` — **EXE Installer** (NSIS, per-user, có shortcut).
 - `bundle/msi/*.msi` — **MSI Installer** (WiX).
 - `RiotAccountManager.exe` (release) — **Portable** (self-contained, chỉ cần WebView2 hệ thống).
