@@ -16,7 +16,7 @@
 # Build output
 build/
 out/
-lib/
+/lib/
 dist/RiotAccountManager.jar
 dist/portable/
 dist/jpackage-input/
@@ -56,3 +56,10 @@ config.json
 
 # Local data directory
 %LOCALAPPDATA%/RiotAccountManager/
+
+# Node / Tauri (app-tauri)
+node_modules/
+app-tauri/node_modules/
+app-tauri/dist/
+app-tauri/src-tauri/target/
+app-tauri/RiotAccountManager-portable.zip

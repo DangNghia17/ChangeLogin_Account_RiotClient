@@ -1,4 +1,3 @@
-import { open } from "@tauri-apps/plugin-dialog";
 import type { RiotStatus } from "../types";
 import { useI18n } from "../i18n/I18nContext";
 import { api } from "../lib/api";
@@ -17,12 +16,7 @@ export function ConfigPanel({ riotPath, status, busy, onPathChanged, onLaunchOrF
   const toast = useToast();
 
   const browse = async () => {
-    const selected = await open({
-      multiple: false,
-      directory: false,
-      title: t("filechooser.riot.title"),
-      filters: [{ name: "RiotClientServices.exe", extensions: ["exe"] }],
-    });
+    const selected = await api.pickRiotPath();
     if (typeof selected === "string") {
       const valid = await api.validateRiotPath(selected);
       if (!valid) {

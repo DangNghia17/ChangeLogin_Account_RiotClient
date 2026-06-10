@@ -5,14 +5,22 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "web": "vite --host",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "tauri": "tauri"
+    "tauri": "tauri",
+    "tauri:dev": "tauri dev",
+    "tauri:build": "tauri build",
+    "check": "npm run check:web && npm run check:rust",
+    "check:web": "tsc --noEmit",
+    "check:rust": "cargo test -p ram-core --quiet && cargo check -p ram-core --quiet",
+    "lint": "tsc --noEmit",
+    "test": "cargo test -p ram-core",
+    "doctor": "node ../scripts/doctor.mjs"
   },
   "dependencies": {
     "@tauri-apps/api": "^2.1.1",
     "@tauri-apps/plugin-dialog": "^2.2.0",
-    "@tauri-apps/plugin-notification": "^2.2.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },

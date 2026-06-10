@@ -1,0 +1,21 @@
+{
+  "name": "riot-account-manager-workspace",
+  "private": true,
+  "version": "2.0.0",
+  "description": "Riot Account Manager — Tauri + React workspace root",
+  "scripts": {
+    "postinstall": "npm install --prefix app-tauri",
+    "dev": "npm run web --prefix app-tauri",
+    "web": "npm run web --prefix app-tauri",
+    "tauri:dev": "npm run tauri:dev --prefix app-tauri",
+    "tauri:build": "npm run tauri:build --prefix app-tauri",
+    "build": "npm run build --prefix app-tauri",
+    "check": "npm run check --prefix app-tauri",
+    "lint": "npm run lint --prefix app-tauri",
+    "test": "npm run test --prefix app-tauri",
+    "doctor": "node scripts/doctor.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

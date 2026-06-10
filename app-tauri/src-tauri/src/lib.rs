@@ -9,7 +9,6 @@ pub fn run() {
     ram_core::settings::sync_startup_registration();
 
     tauri::Builder::default()
-        .plugin(tauri_plugin_notification::init())
         .plugin(tauri_plugin_dialog::init())
         .invoke_handler(tauri::generate_handler![
             commands::list_accounts,
