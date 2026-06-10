@@ -48,14 +48,41 @@ jobs:
       - name: Create portable ZIP
         shell: pwsh
         run: |
-          # Cargo workspace puts target/ at app-tauri/target (not src-tauri/target).
+          # Cargo workspace: app-tauri/target/release/
+          # Default cargo binary is riot-account-manager.exe; mainBinaryName renames to RiotAccountManager.exe.
           $release = Join-Path (Get-Location) "target/release"
           if (-not (Test-Path $release)) { throw "release dir not found: $release" }
-          $exe = Get-ChildItem -Path $release -Filter "RiotAccountManager.exe" |
-            Where-Object { $_.FullName -notmatch "deps" } | Select-Object -First 1
-          if ($null -eq $exe) { throw "portable exe not found under $release" }
+
+          $candidates = @(
+            "RiotAccountManager.exe",
+            "riot-account-manager.exe"
+          )
+          $exe = $null
+          foreach ($name in $candidates) {
+            $path = Join-Path $release $name
+            if (Test-Path $path) { $exe = Get-Item $path; break }
+          }
+
+          if ($null -eq $exe) {
+            $exe = Get-ChildItem -Recurse -Path $release -Filter "*.exe" |
+              Where-Object {
+                $_.FullName -notmatch '\\deps\\' -and
+                $_.Name -notmatch 'setup' -and
+                $_.FullName -notmatch '\\bundle\\nsis\\' -and
+                $_.FullName -notmatch '\\bundle\\msi\\'
+              } |
+              Select-Object -First 1
+          }
+
+          if ($null -eq $exe) {
+            Write-Host "EXE files under $release :"
+            Get-ChildItem -Recurse -Path $release -Filter "*.exe" | ForEach-Object { $_.FullName }
+            throw "portable exe not found under $release"
+          }
+
+          Write-Host "Using portable exe: $($exe.FullName)"
           New-Item -ItemType Directory -Force -Path portable | Out-Null
-          Copy-Item $exe.FullName portable/
+          Copy-Item $exe.FullName (Join-Path portable "RiotAccountManager.exe")
           Compress-Archive -Path portable/* -DestinationPath "RiotAccountManager-portable.zip" -Force
 
       - name: Upload artifacts
