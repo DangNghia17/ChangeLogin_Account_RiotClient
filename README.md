@@ -50,7 +50,7 @@ So với đăng nhập thủ công:
 ## 📦 Tải xuống
 
 ### Khuyến nghị (Installer)
-- **File:** `RiotAccountManager_*_x64-setup.exe` (NSIS) hoặc `.msi` (WiX)
+- **File:** `RiotAccountManager_*_x64-setup.exe` (NSIS installer)
 - Cài đặt có shortcut, kèm WebView2 bootstrapper
 
 ### Portable ZIP
