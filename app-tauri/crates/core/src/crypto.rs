@@ -158,9 +158,8 @@ pub fn is_new_format(data: &str) -> bool {
 
 #[cfg(windows)]
 fn dpapi_protect(data: &[u8]) -> Result<Vec<u8>, String> {
-    use windows::Win32::Foundation::HLOCAL;
+    use windows::Win32::Foundation::{HLOCAL, LocalFree};
     use windows::Win32::Security::Cryptography::{CryptProtectData, CRYPT_INTEGER_BLOB};
-    use windows::Win32::System::Memory::LocalFree;
 
     unsafe {
         let mut in_blob = CRYPT_INTEGER_BLOB {
@@ -188,9 +187,8 @@ fn dpapi_protect(data: &[u8]) -> Result<Vec<u8>, String> {
 
 #[cfg(windows)]
 fn dpapi_unprotect(data: &[u8]) -> Result<Vec<u8>, String> {
-    use windows::Win32::Foundation::HLOCAL;
+    use windows::Win32::Foundation::{HLOCAL, LocalFree};
     use windows::Win32::Security::Cryptography::{CryptUnprotectData, CRYPT_INTEGER_BLOB};
-    use windows::Win32::System::Memory::LocalFree;
 
     unsafe {
         let mut in_blob = CRYPT_INTEGER_BLOB {
