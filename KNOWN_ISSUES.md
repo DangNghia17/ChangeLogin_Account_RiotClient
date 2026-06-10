@@ -70,9 +70,7 @@ môi trường phát triển (CI/agent chạy Linux, không có Riot Client + kh
   chỉ đặt vị trí cố định góc trên-phải. Có thể thêm bằng `tauri-plugin-window-state`.
 - Toàn bộ danh sách account vẫn ghi lại mỗi lần thay đổi (như bản Java) — chấp nhận với số lượng nhỏ.
 - Chưa có test tự động cho frontend (React) — hiện chỉ có type-check + build. Có thể thêm Vitest.
-- Notification hiện dùng Toast trong app; có thể bổ sung native OS notification qua
-  `tauri-plugin-notification` cho thông báo nền.
-- Bản Java cũ vẫn nằm trong repo — cần quyết định thời điểm gỡ sau khi bản Tauri được kiểm thử trên Windows.
+- Thông báo dùng Toast trong app (không dùng OS notification).
 
 ## 8. Bug đã biết: chưa phát hiện lỗi logic trong phạm vi test hiện tại
 

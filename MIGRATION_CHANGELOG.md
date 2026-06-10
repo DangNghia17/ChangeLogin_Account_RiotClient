@@ -1,7 +1,7 @@
 # MIGRATION_CHANGELOG.md
 
 Thay đổi file trong quá trình migration Java Swing → Tauri + React + TypeScript.
-Mã nguồn Java **được giữ lại** (để đối chiếu và rollback), app Tauri nằm ở `app-tauri/`.
+App Tauri nằm ở `app-tauri/`. Mã nguồn Java đã được gỡ khỏi repo sau khi migration hoàn tất.
 
 ## File THÊM
 
@@ -55,11 +55,15 @@ Mã nguồn Java **được giữ lại** (để đối chiếu và rollback), a
 ### CI
 - `.github/workflows/tauri-release.yml` (build NSIS exe + MSI + portable zip trên windows-latest)
 
-## File SỬA
-- _(Không sửa file mã nguồn Java)_ — bản Java giữ nguyên để đối chiếu/rollback.
+## File XÓA (sau migration hoàn tất)
 
-## File XÓA
-- _(Không xóa)_ — mã Java và tài liệu trước đó được giữ lại trong cùng repo.
+- `src/main/java/` — mã nguồn Java Swing
+- `runtime/` — JRE bundled (~21 MB)
+- `pom.xml`, `MANIFEST.MF`
+- `scripts/build.sh`, `scripts/build.ps1`, `scripts/package.ps1`
+- `dist/launch4j-config.xml`
+- `.github/workflows/release.yml` — CI build Java
+- `ANALYSIS.md`, `README_UPDATE.md`, `README_FOR_DEV_EN.md`, `README_FOR_DEV_VI.md`
 
 > Ghi chú: thư mục build tạm (`app-tauri/node_modules`, `app-tauri/dist`,
 > `app-tauri/src-tauri/target`, `app-tauri/src-tauri/gen`) được gitignore, không commit.

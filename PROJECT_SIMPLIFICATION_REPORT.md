@@ -41,13 +41,25 @@ Báo cáo tối ưu môi trường phát triển — Riot Account Manager (Tauri
 
 ## 2. Đã xoá gì
 
+### Hệ Java cũ (toàn bộ)
 | Thành phần | Lý do |
 |------------|-------|
-| `@tauri-apps/plugin-notification` (npm) | Đăng ký nhưng **không dùng** ở frontend hay commands |
-| `tauri-plugin-notification` (Rust) | Tương tự — dead code |
+| `src/main/java/` | Đã migrate sang Tauri — không còn dùng |
+| `runtime/` (~21 MB JRE bundled) | Không cần cho Tauri |
+| `pom.xml`, `MANIFEST.MF` | Build Maven Java |
+| `scripts/build.sh`, `build.ps1`, `package.ps1` | Script build Java/jpackage |
+| `dist/launch4j-config.xml` | Launch4j legacy |
+| `.github/workflows/release.yml` | CI build Java |
+| `ANALYSIS.md`, `README_UPDATE.md`, `README_FOR_DEV_*.md` | Tài liệu Java cũ |
+
+### Tauri dead code
+| Thành phần | Lý do |
+|------------|-------|
+| `@tauri-apps/plugin-notification` (npm) | Đăng ký nhưng **không dùng** |
+| `tauri-plugin-notification` (Rust) | Tương tự |
 | Permission `notification:default` | Không còn plugin |
 
-**Không xoá:** code Java legacy, tính năng UI, luồng nghiệp vụ, plugin dialog (đang dùng chọn file `.exe`).
+**Giữ lại:** `docs/` (mô tả tương thích dữ liệu Java cũ cho migration), `README_MIGRATION.md`, `KNOWN_ISSUES.md`.
 
 ---
 
@@ -135,9 +147,6 @@ Hoặc push tag `vX.Y.Z` → CI build NSIS/MSI/portable tự động.
 
 ### Chức năng Windows-only (không test được trên web/Linux)
 - Auto-login (`enigo`), focus/launch Riot Client, DPAPI mã hóa, startup registry — cần máy Windows thật.
-
-### Java legacy (tham chiếu, không bắt buộc cho Tauri)
-- JDK + Maven chỉ nếu build bản Java cũ trong `src/main/java/`.
 
 ---
 

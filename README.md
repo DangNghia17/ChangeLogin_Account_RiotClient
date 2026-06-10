@@ -1,7 +1,7 @@
 # Riot Account Manager
 
 [![GitHub](https://img.shields.io/badge/GitHub-Repository-blue?style=flat-square&logo=github)](https://github.com/DangNghia17/ChangeLogin_Account_RiotClient)
-[![Release](https://img.shields.io/badge/Release-v1.0.0-green?style=flat-square)](https://github.com/DangNghia17/ChangeLogin_Account_RiotClient/releases)
+[![Release](https://img.shields.io/badge/Release-v2.0.0-green?style=flat-square)](https://github.com/DangNghia17/ChangeLogin_Account_RiotClient/releases)
 [![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
 
 ## Giới thiệu
@@ -50,16 +50,15 @@ So với đăng nhập thủ công:
 ## 📦 Tải xuống
 
 ### Phiên bản Portable (Khuyến nghị)
-- **File:** `ChangeLogin_Account_RiotClient.Portable_Version.zip`
-- **Kích thước:** ~26 MB
-- **Nội dung:** Ứng dụng đã đóng gói sẵn với JRE, sẵn sàng sử dụng
-- **Đối tượng:** Người dùng cuối (End users)
+- **File:** `RiotAccountManager-portable.zip` hoặc `RiotAccountManager.exe`
+- **Nội dung:** Ứng dụng Tauri native, nhẹ, sẵn sàng sử dụng
+- **Đối tượng:** Người dùng cuối
 
-### Phiên bản Full Source
-- **File:** `ChangeLogin_Account_RiotClient_FullSource.zip`
-- **Kích thước:** ~46 MB
-- **Nội dung:** Source code đầy đủ và tất cả dependencies
-- **Đối tượng:** Developers, contributors
+### Installer
+- **NSIS `.exe`** hoặc **WiX `.msi`** — cài đặt có shortcut
+
+### Source code
+- Clone repo hoặc tải từ GitHub — xem `README_DEV.md` để build
 
 📥 **Tải xuống:** [Releases](https://github.com/DangNghia17/ChangeLogin_Account_RiotClient/releases)
 
@@ -69,7 +68,7 @@ So với đăng nhập thủ công:
 2. Giải nén file ZIP
 3. Chạy file `RiotAccountManager.exe` (double-click)
 
-**Lưu ý:** KHÔNG cần cài Java, ứng dụng đã có sẵn JRE trong package.
+**Lưu ý:** KHÔNG cần cài Java. Cần Windows 10/11 với WebView2 (có sẵn trên hầu hết máy).
 
 ## Hướng dẫn sử dụng
 
@@ -99,7 +98,8 @@ So với đăng nhập thủ công:
 
 - Windows 10/11
 - Riot Client đã được cài đặt
-- Không cần cài Java (đã có trong package)
+- Không cần cài Java (ứng dụng Tauri native)
+- WebView2 (có sẵn trên Windows 10/11)
 
 ## Hỗ trợ
 

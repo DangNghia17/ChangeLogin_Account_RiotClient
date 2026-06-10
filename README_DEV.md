@@ -146,10 +146,6 @@ app-tauri/
 └── src-tauri/           # Vỏ Tauri + commands
 ```
 
-Code Java legacy (`src/main/java/`) giữ lại để tham chiếu; bản phát hành mới dùng Tauri.
-
----
-
 ## Khi gặp lỗi
 
 ```bash

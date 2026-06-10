@@ -1,7 +1,7 @@
 # Riot Account Manager
 
 [![GitHub](https://img.shields.io/badge/GitHub-Repository-blue?style=flat-square&logo=github)](https://github.com/DangNghia17/ChangeLogin_Account_RiotClient)
-[![Release](https://img.shields.io/badge/Release-v1.0.0-green?style=flat-square)](https://github.com/DangNghia17/ChangeLogin_Account_RiotClient/releases)
+[![Release](https://img.shields.io/badge/Release-v2.0.0-green?style=flat-square)](https://github.com/DangNghia17/ChangeLogin_Account_RiotClient/releases)
 [![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
 
 ## Introduction
@@ -50,16 +50,15 @@ Compared to manual login:
 ## 📦 Download
 
 ### Portable Version (Recommended)
-- **File:** `ChangeLogin_Account_RiotClient.Portable_Version.zip`
-- **Size:** ~26 MB
-- **Contents:** Application packaged with JRE, ready to use
+- **File:** `RiotAccountManager-portable.zip` or `RiotAccountManager.exe`
+- **Contents:** Native Tauri app, lightweight, ready to use
 - **Target:** End users
 
-### Full Source Version
-- **File:** `ChangeLogin_Account_RiotClient_FullSource.zip`
-- **Size:** ~46 MB
-- **Contents:** Full source code and all dependencies
-- **Target:** Developers, contributors
+### Installer
+- **NSIS `.exe`** or **WiX `.msi`** — install with shortcuts
+
+### Source code
+- Clone the repo from GitHub — see `README_DEV.md` to build
 
 📥 **Download:** [Releases](https://github.com/DangNghia17/ChangeLogin_Account_RiotClient/releases)
 
@@ -69,7 +68,7 @@ Compared to manual login:
 2. Extract the ZIP file
 3. Run `RiotAccountManager.exe` (double-click)
 
-**Note:** NO need to install Java, the application already includes JRE in the package.
+**Note:** NO Java required. Windows 10/11 with WebView2 (preinstalled on most PCs).
 
 ## Usage Guide
 
@@ -99,7 +98,8 @@ Compared to manual login:
 
 - Windows 10/11
 - Riot Client installed
-- No need to install Java (included in package)
+- No Java required (native Tauri app)
+- WebView2 (included on Windows 10/11)
 
 ## Support
 
