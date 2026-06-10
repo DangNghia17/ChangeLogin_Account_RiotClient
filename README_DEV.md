@@ -47,7 +47,40 @@ npm run tauri:dev
 
 ---
 
-## Cách 3: Build release (Windows)
+## Cách 3: Build frontend (`npm run build`)
+
+**Chỉ build giao diện React** (HTML/JS/CSS tĩnh). Không tạo file `.exe`.
+
+```bash
+git pull
+npm install
+npm run build
+```
+
+### Output ở đâu?
+
+```
+app-tauri/dist/
+├── index.html          # trang chính
+└── assets/             # JS, CSS, ảnh (đã bundle + hash tên file)
+    ├── index-xxxxx.js
+    ├── index-xxxxx.css
+    └── *.png / *.jpg
+```
+
+### Dùng thế nào?
+
+| Mục đích | Lệnh |
+|----------|------|
+| Xem bản build trên browser (mock API) | `cd app-tauri && npm run preview` → mở **http://localhost:4173** |
+| Đóng gói vào app desktop | Tự động dùng khi chạy `npm run tauri:build` (Tauri đọc `app-tauri/dist/`) |
+| Deploy lên web server tĩnh | Copy cả thư mục `app-tauri/dist/` lên host (chỉ UI mock, **không** có auto-login Windows) |
+
+> `npm run build` **không** tạo app cài đặt. Muốn file `.exe`/`.msi` → xem Cách 4.
+
+---
+
+## Cách 4: Build release desktop (Windows)
 
 ```bash
 git pull
@@ -55,7 +88,19 @@ npm install
 npm run tauri:build
 ```
 
-Artifacts trong `app-tauri/src-tauri/target/release/bundle/` (NSIS `.exe`, WiX `.msi`).
+Lệnh này tự chạy `npm run build` trước, rồi đóng gói Rust + WebView.
+
+### Output ở đâu?
+
+```
+app-tauri/src-tauri/target/release/
+├── RiotAccountManager.exe              # portable (chạy trực tiếp)
+└── bundle/
+    ├── nsis/RiotAccountManager_x.x.x_x64-setup.exe   # installer NSIS
+    └── msi/RiotAccountManager_x.x.x_x64_en-US.msi    # installer MSI
+```
+
+Chạy file `.exe` portable hoặc cài qua installer — đây mới là bản dùng thật (auto-login, lưu account, v.v.).
 
 Release tự động qua GitHub Actions khi push tag `v*`.
 
@@ -65,7 +110,9 @@ Release tự động qua GitHub Actions khi push tag `v*`.
 
 | Lệnh | Mô tả |
 |------|--------|
-| `npm run dev` / `npm run web` | Web preview (browser) |
+| `npm run dev` / `npm run web` | Web preview (browser, hot reload) |
+| `npm run build` | Build frontend → `app-tauri/dist/` |
+| `npm run preview` *(trong `app-tauri/`)* | Xem `dist/` trên browser |
 | `npm run tauri:dev` | Tauri dev (Windows) |
 | `npm run tauri:build` | Build installer/portable |
 | `npm run check` | TypeScript + `cargo test/check` core |

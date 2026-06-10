@@ -10,6 +10,7 @@
     "tauri:dev": "npm run tauri:dev --prefix app-tauri",
     "tauri:build": "npm run tauri:build --prefix app-tauri",
     "build": "npm run build --prefix app-tauri",
+    "preview": "npm run preview --prefix app-tauri",
     "check": "npm run check --prefix app-tauri",
     "lint": "npm run lint --prefix app-tauri",
     "test": "npm run test --prefix app-tauri",

@@ -93,17 +93,30 @@ npm run test
 
 ## 5. Cách build nhanh nhất
 
-### Frontend only (Linux/macOS/Windows)
+### `npm run build` — chỉ frontend (mọi OS)
+
 ```bash
 npm install
 npm run build
 ```
 
-### Tauri release (Windows)
+**Output:** `app-tauri/dist/` (`index.html` + `assets/`).
+
+**Xem thử:** `cd app-tauri && npm run preview` → http://localhost:4173 (mock API, không phải app desktop).
+
+**Lưu ý:** Đây là file tĩnh cho Vite/Tauri bundle — **không** có `.exe`. Tauri tự dùng thư mục này khi `tauri:build`.
+
+### `npm run tauri:build` — app desktop (Windows)
+
 ```bash
 npm install
 npm run tauri:build
 ```
+
+**Output:**
+- `app-tauri/src-tauri/target/release/RiotAccountManager.exe` (portable)
+- `app-tauri/src-tauri/target/release/bundle/nsis/*.exe` (installer)
+- `app-tauri/src-tauri/target/release/bundle/msi/*.msi` (installer)
 
 Hoặc push tag `vX.Y.Z` → CI build NSIS/MSI/portable tự động.
 
