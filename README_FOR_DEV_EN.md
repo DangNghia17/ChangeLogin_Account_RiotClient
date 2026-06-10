@@ -97,20 +97,29 @@ public class Account {
 - Windows 10/11
 
 ### Build from source
+
+Cross-platform dev compile:
 ```bash
-# Compile
-javac -encoding UTF-8 -d build/classes -cp "lib/json-20231013.jar" src/main/java/com/riotaccountmanager/*.java
+bash scripts/build.sh
+```
 
-# Copy resources
-cp -r src/main/resources/* build/classes/
-
-# Create JAR
-jar cfm RiotAccountManager.jar MANIFEST.MF -C build/classes .
+Build a runnable JAR (Maven or javac fallback):
+```powershell
+./scripts/build.ps1     # => dist/RiotAccountManager.jar
+```
+```bash
+mvn -DskipTests clean package   # => target/riot-account-manager-2.0.0.jar
 ```
 
 ### Run application
 ```bash
-java -jar RiotAccountManager.jar
+java -jar dist/RiotAccountManager.jar
+```
+
+### Package (Windows, self-contained, no Java needed by users)
+```powershell
+./scripts/package.ps1 -AppVersion 2.0.0
+# => dist/RiotAccountManager-2.0.0-portable.zip  (+ Setup.exe if WiX is installed)
 ```
 
 ### Building Executable (.exe)
