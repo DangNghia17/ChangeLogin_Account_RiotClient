@@ -16,9 +16,9 @@ fn launch_command() -> Option<String> {
 
 #[cfg(windows)]
 pub fn enable() -> Result<(), String> {
-    use std::process::Command;
+    use crate::process;
     let cmd = launch_command().ok_or("could not resolve current executable path")?;
-    let status = Command::new("reg")
+    let status = process::command("reg")
         .args(["add", RUN_KEY, "/v", VALUE_NAME, "/t", "REG_SZ", "/d", &cmd, "/f"])
         .status()
         .map_err(|e| e.to_string())?;
@@ -31,11 +31,11 @@ pub fn enable() -> Result<(), String> {
 
 #[cfg(windows)]
 pub fn disable() -> Result<(), String> {
-    use std::process::Command;
+    use crate::process;
     if !is_enabled() {
         return Ok(());
     }
-    let status = Command::new("reg")
+    let status = process::command("reg")
         .args(["delete", RUN_KEY, "/v", VALUE_NAME, "/f"])
         .status()
         .map_err(|e| e.to_string())?;
@@ -48,8 +48,8 @@ pub fn disable() -> Result<(), String> {
 
 #[cfg(windows)]
 pub fn is_enabled() -> bool {
-    use std::process::Command;
-    Command::new("reg")
+    use crate::process;
+    process::command("reg")
         .args(["query", RUN_KEY, "/v", VALUE_NAME])
         .output()
         .map(|o| String::from_utf8_lossy(&o.stdout).contains(VALUE_NAME))

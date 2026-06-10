@@ -48,44 +48,33 @@ jobs:
       - name: Build app (NSIS .exe + WiX .msi)
         run: npm run tauri build
 
-      - name: Create portable ZIP
+      - name: Create portable ZIP (installer + huong dan)
         shell: pwsh
         run: |
-          # Cargo workspace: app-tauri/target/release/
-          # Default cargo binary is riot-account-manager.exe; mainBinaryName renames to RiotAccountManager.exe.
-          $release = Join-Path (Get-Location) "target/release"
-          if (-not (Test-Path $release)) { throw "release dir not found: $release" }
+          # Khuyen nghi nguoi dung chay *-setup.exe (co WebView2 bootstrapper).
+          # Zip gom installer + huong dan — tranh phan phoi 1 file .exe tran co the thieu WebView2.
+          $setup = Get-ChildItem -Path "target/release/bundle/nsis" -Filter "*-setup.exe" | Select-Object -First 1
+          if ($null -eq $setup) { throw "NSIS setup.exe not found" }
 
-          $candidates = @(
-            "RiotAccountManager.exe",
-            "riot-account-manager.exe"
-          )
-          $exe = $null
-          foreach ($name in $candidates) {
-            $path = Join-Path $release $name
-            if (Test-Path $path) { $exe = Get-Item $path; break }
-          }
-
-          if ($null -eq $exe) {
-            $exe = Get-ChildItem -Recurse -Path $release -Filter "*.exe" |
-              Where-Object {
-                $_.FullName -notmatch '\\deps\\' -and
-                $_.Name -notmatch 'setup' -and
-                $_.FullName -notmatch '\\bundle\\nsis\\' -and
-                $_.FullName -notmatch '\\bundle\\msi\\'
-              } |
-              Select-Object -First 1
-          }
-
-          if ($null -eq $exe) {
-            Write-Host "EXE files under $release :"
-            Get-ChildItem -Recurse -Path $release -Filter "*.exe" | ForEach-Object { $_.FullName }
-            throw "portable exe not found under $release"
-          }
-
-          Write-Host "Using portable exe: $($exe.FullName)"
           New-Item -ItemType Directory -Force -Path portable | Out-Null
-          Copy-Item $exe.FullName (Join-Path portable "RiotAccountManager.exe")
+          Copy-Item $setup.FullName (Join-Path portable "RiotAccountManager-Setup.exe")
+          @"
+          HUONG DAN CAI DAT - Riot Account Manager
+          ========================================
+
+          1. Giai nen file ZIP nay
+          2. Chay RiotAccountManager-Setup.exe
+          3. Neu Windows SmartScreen canh bao:
+             - Bam "More info" -> "Run anyway"
+             (Ung dung chua ky code signing — binh thuong voi app moi)
+
+          4. Sau khi cai, mo app tu Start Menu
+
+          Loi khi chay? Xem log:
+          %LOCALAPPDATA%\RiotAccountManager\startup.log
+
+          Tai WebView2 (neu can): https://go.microsoft.com/fwlink/p/?LinkId=2124703
+          "@ | Set-Content -Path (Join-Path portable "HUONG-DAN.txt") -Encoding UTF8
           Compress-Archive -Path portable/* -DestinationPath "RiotAccountManager-portable.zip" -Force
 
       - name: Upload artifacts

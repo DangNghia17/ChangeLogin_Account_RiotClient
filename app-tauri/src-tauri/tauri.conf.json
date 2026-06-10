@@ -43,6 +43,10 @@
       "nsis": {
         "installMode": "currentUser",
         "languages": ["English", "Vietnamese"]
+      },
+      "webviewInstallMode": {
+        "type": "embedBootstrapper",
+        "silent": true
       }
     }
   },

@@ -88,8 +88,8 @@ pub fn machine_id() -> String {
 
 #[cfg(windows)]
 fn read_machine_guid_windows() -> Option<String> {
-    use std::process::Command;
-    let out = Command::new("reg")
+    use crate::process;
+    let out = process::command("reg")
         .args([
             "query",
             "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Cryptography",
