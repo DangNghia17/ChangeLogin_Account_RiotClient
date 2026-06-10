@@ -1,5 +1,7 @@
 mod commands;
 
+use tauri::Manager;
+
 /// Application entry used by both the desktop binary and (potentially) mobile targets.
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() -> Result<(), String> {
@@ -13,6 +15,13 @@ pub fn run() -> Result<(), String> {
     write_startup_log("launching tauri");
 
     tauri::Builder::default()
+        .plugin(tauri_plugin_single_instance::init(|app, _argv, _cwd| {
+            if let Some(window) = app.get_webview_window("main") {
+                let _ = window.unminimize();
+                let _ = window.show();
+                let _ = window.set_focus();
+            }
+        }))
         .plugin(tauri_plugin_dialog::init())
         .invoke_handler(tauri::generate_handler![
             commands::list_accounts,

@@ -17,25 +17,18 @@ pub fn status() -> RiotStatus {
 pub fn is_riot_client_running() -> bool {
     #[cfg(windows)]
     {
-        use crate::process;
-        if let Ok(out) = process::command("tasklist").output() {
-            let text = String::from_utf8_lossy(&out.stdout).to_lowercase();
-            return text.contains("riotclientservices.exe") || text.contains("riot client");
-        }
+        return crate::riot_windows::is_riot_client_running();
     }
+    #[cfg(not(windows))]
     false
 }
 
 pub fn is_riot_client_window_visible() -> bool {
     #[cfg(windows)]
     {
-        use crate::process;
-        let ps = "Get-Process | Where-Object {$_.MainWindowTitle -like '*Riot Client*' -or $_.MainWindowTitle -like '*Riot*'} | Select-Object -First 1 | ForEach-Object { $_.MainWindowTitle }";
-        if let Ok(out) = process::command("powershell").args(["-Command", ps]).output() {
-            let line = String::from_utf8_lossy(&out.stdout).to_lowercase();
-            return line.contains("riot");
-        }
+        return crate::riot_windows::is_riot_client_window_visible();
     }
+    #[cfg(not(windows))]
     false
 }
 
@@ -56,8 +49,8 @@ fn run_powershell_script(script: &str) -> Option<String> {
         let mut f = std::fs::File::create(&tmp).ok()?;
         f.write_all(script.as_bytes()).ok()?;
     }
-    let out = process::command("powershell.exe")
-        .args(["-ExecutionPolicy", "Bypass", "-File"])
+    let out = process::powershell()
+        .args(["-File"])
         .arg(&tmp)
         .output()
         .ok()?;
