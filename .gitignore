@@ -1,39 +1,12 @@
-# Compiled class files
-*.class
-
 # Log files
 *.log
 
-# Package Files
+# Package archives (local)
 *.jar
 *.war
-*.nar
-*.ear
 *.zip
 *.tar.gz
 *.rar
-
-# Build output
-build/
-out/
-lib/
-dist/RiotAccountManager.jar
-dist/portable/
-dist/jpackage-input/
-dist/*.msi
-dist/RiotAccountManager*.exe
-
-# Maven
-target/
-pom.xml.tag
-pom.xml.releaseBackup
-pom.xml.versionsBackup
-pom.xml.next
-release.properties
-dependency-reduced-pom.xml
-buildNumber.properties
-.mvn/timing.properties
-.mvn/wrapper/maven-wrapper.jar
 
 # IDE
 .idea/
@@ -53,6 +26,12 @@ Thumbs.db
 # Application data (sensitive - never commit)
 accounts.dat
 config.json
-
-# Local data directory
 %LOCALAPPDATA%/RiotAccountManager/
+
+# Node / Tauri (app-tauri)
+node_modules/
+app-tauri/node_modules/
+app-tauri/dist/
+app-tauri/target/
+app-tauri/src-tauri/target/
+app-tauri/RiotAccountManager-portable.zip

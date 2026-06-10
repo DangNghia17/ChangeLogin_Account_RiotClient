@@ -1,0 +1,11 @@
+.git
+.github
+node_modules
+app-tauri/node_modules
+app-tauri/dist
+app-tauri/src-tauri/target
+runtime
+src
+dist
+*.md
+!README_DEV.md
