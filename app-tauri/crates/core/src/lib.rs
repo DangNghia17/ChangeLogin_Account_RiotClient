@@ -5,6 +5,7 @@ pub mod config;
 pub mod crypto;
 pub mod model;
 pub mod paths;
+pub mod process;
 pub mod riot;
 pub mod settings;
 pub mod startup;

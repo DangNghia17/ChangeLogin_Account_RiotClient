@@ -49,13 +49,13 @@ So với đăng nhập thủ công:
 
 ## 📦 Tải xuống
 
-### Phiên bản Portable (Khuyến nghị)
-- **File:** `RiotAccountManager-portable.zip` hoặc `RiotAccountManager.exe`
-- **Nội dung:** Ứng dụng Tauri native, nhẹ, sẵn sàng sử dụng
-- **Đối tượng:** Người dùng cuối
+### Khuyến nghị (Installer)
+- **File:** `RiotAccountManager_*_x64-setup.exe` (NSIS) hoặc `.msi` (WiX)
+- Cài đặt có shortcut, kèm WebView2 bootstrapper
 
-### Installer
-- **NSIS `.exe`** hoặc **WiX `.msi`** — cài đặt có shortcut
+### Portable ZIP
+- **File:** `RiotAccountManager-portable.zip` — chứa `RiotAccountManager-Setup.exe` + `HUONG-DAN.txt`
+- Giải nén → chạy `RiotAccountManager-Setup.exe` để cài
 
 ### Source code
 - Clone repo hoặc tải từ GitHub — xem `README_DEV.md` để build
@@ -64,11 +64,11 @@ So với đăng nhập thủ công:
 
 ## Cài đặt
 
-1. Tải file **Portable Version** từ [Releases](https://github.com/DangNghia17/ChangeLogin_Account_RiotClient/releases)
-2. Giải nén file ZIP
-3. Chạy file `RiotAccountManager.exe` (double-click)
+1. Tải `*-setup.exe` hoặc `RiotAccountManager-portable.zip` từ [Releases](https://github.com/DangNghia17/ChangeLogin_Account_RiotClient/releases)
+2. Nếu Windows SmartScreen cảnh báo: bấm **More info** → **Run anyway** (app chưa ký code signing — bình thường với bản mới)
+3. Chạy installer → mở app từ Start Menu
 
-**Lưu ý:** KHÔNG cần cài Java. Cần Windows 10/11 với WebView2 (có sẵn trên hầu hết máy).
+**Lưu ý:** Không cần Java. Cần Windows 10/11. Nếu app không mở, xem log tại `%LOCALAPPDATA%\RiotAccountManager\startup.log`
 
 ## Hướng dẫn sử dụng
 
