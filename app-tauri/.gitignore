@@ -10,3 +10,4 @@ src-tauri/gen/
 *.log
 .env
 app-tauri/.vite/
+app-tauri/.vite/
