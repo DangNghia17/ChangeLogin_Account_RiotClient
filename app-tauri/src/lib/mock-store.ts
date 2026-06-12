@@ -71,6 +71,11 @@ export const mockStore = {
     return accounts;
   },
 
+  replaceAccounts(accounts: Account[]): Account[] {
+    writeAccounts(accounts);
+    return accounts;
+  },
+
   riotStatus(): RiotStatus {
     return { running: false, window_visible: false };
   },

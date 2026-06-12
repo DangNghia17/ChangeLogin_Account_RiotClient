@@ -34,7 +34,7 @@ export function AboutDialog({ onClose, onShowWelcome }: Props) {
             </div>
           ))}
         </div>
-        <div className="about-version">Version 3.0.0 (Tauri) | MIT License</div>
+        <div className="about-version">Version 3.1.0 (Tauri) | MIT License</div>
         <div className="modal-actions">
           <button className="btn btn-gray" onClick={onShowWelcome}>{t("about.showWelcome")}</button>
           <button className="btn btn-primary" onClick={onClose}>{t("about.close")}</button>

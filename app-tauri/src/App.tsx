@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { Account, RiotStatus } from "./types";
 import { api } from "./lib/api";
 import { useI18n } from "./i18n/I18nContext";
+import { useTheme } from "./theme/ThemeContext";
 import { useToast } from "./components/Toast";
 import { AccountTable } from "./components/AccountTable";
 import { ConfigPanel } from "./components/ConfigPanel";
@@ -11,6 +12,7 @@ import { SettingsDialog } from "./dialogs/SettingsDialog";
 import { AboutDialog } from "./dialogs/AboutDialog";
 import { WelcomeDialog } from "./dialogs/WelcomeDialog";
 import { LoginStatusDialog } from "./dialogs/LoginStatusDialog";
+import { BackupDialog } from "./dialogs/BackupDialog";
 
 import addIcon from "./assets/add_account.png";
 import editIcon from "./assets/edit_account.png";
@@ -23,6 +25,7 @@ const WELCOME_KEY = "ram.welcome_shown";
 
 export default function App() {
   const { t, lang, setLang } = useI18n();
+  const { resolved, toggle } = useTheme();
   const toast = useToast();
 
   const [accounts, setAccounts] = useState<Account[]>([]);
@@ -35,6 +38,7 @@ export default function App() {
   const [pendingDelete, setPendingDelete] = useState<{ index: number; account: Account } | null>(null);
   const [showSettings, setShowSettings] = useState(false);
   const [showAbout, setShowAbout] = useState(false);
+  const [backupMode, setBackupMode] = useState<"export" | "import" | null>(null);
   const [showWelcome, setShowWelcome] = useState(
     () => localStorage.getItem(WELCOME_KEY) !== "true",
   );
@@ -200,6 +204,14 @@ export default function App() {
             <option value="vi">VI</option>
             <option value="en">EN</option>
           </select>
+          <button
+            className="icon-btn ghost"
+            title={t("theme.toggle")}
+            aria-label={t("theme.toggle")}
+            onClick={toggle}
+          >
+            {resolved === "dark" ? "☀" : "🌙"}
+          </button>
           <button className="icon-btn ghost" title={t("settings.title")} onClick={() => setShowSettings(true)}>
             ⚙
           </button>
@@ -275,7 +287,19 @@ export default function App() {
           onCancel={() => setEditing(null)}
         />
       )}
-      {showSettings && <SettingsDialog onClose={() => setShowSettings(false)} />}
+      {showSettings && (
+        <SettingsDialog
+          onClose={() => setShowSettings(false)}
+          onExport={() => {
+            setShowSettings(false);
+            setBackupMode("export");
+          }}
+          onImport={() => {
+            setShowSettings(false);
+            setBackupMode("import");
+          }}
+        />
+      )}
       {showAbout && (
         <AboutDialog
           onClose={() => setShowAbout(false)}
@@ -311,6 +335,18 @@ export default function App() {
           username={session}
           onLogout={onLogout}
           onClose={() => setShowLoginStatus(false)}
+        />
+      )}
+      {backupMode && (
+        <BackupDialog
+          mode={backupMode}
+          onClose={() => setBackupMode(null)}
+          onImported={() => {
+            setSelected(-1);
+            setSession(null);
+            reloadAccounts();
+            api.getRiotPath().then(setRiotPath).catch(() => undefined);
+          }}
         />
       )}
     </div>
