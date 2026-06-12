@@ -5,10 +5,12 @@ import { useI18n } from "./i18n/I18nContext";
 import { useToast } from "./components/Toast";
 import { AccountTable } from "./components/AccountTable";
 import { ConfigPanel } from "./components/ConfigPanel";
+import { ConfirmDialog } from "./components/ConfirmDialog";
 import { AccountDialog } from "./dialogs/AccountDialog";
 import { SettingsDialog } from "./dialogs/SettingsDialog";
 import { AboutDialog } from "./dialogs/AboutDialog";
 import { WelcomeDialog } from "./dialogs/WelcomeDialog";
+import { LoginStatusDialog } from "./dialogs/LoginStatusDialog";
 
 import addIcon from "./assets/add_account.png";
 import editIcon from "./assets/edit_account.png";
@@ -30,11 +32,16 @@ export default function App() {
   const [busy, setBusy] = useState(false);
 
   const [editing, setEditing] = useState<{ account: Account | null; index: number } | null>(null);
+  const [pendingDelete, setPendingDelete] = useState<{ index: number; account: Account } | null>(null);
   const [showSettings, setShowSettings] = useState(false);
   const [showAbout, setShowAbout] = useState(false);
   const [showWelcome, setShowWelcome] = useState(
     () => localStorage.getItem(WELCOME_KEY) !== "true",
   );
+  // Username of the account whose credentials were last sent to the Riot Client.
+  // Used purely on the client side to reflect the active login session in the UI.
+  const [session, setSession] = useState<string | null>(null);
+  const [showLoginStatus, setShowLoginStatus] = useState(false);
 
   const loginInFlight = useRef(false);
 
@@ -65,6 +72,8 @@ export default function App() {
     try {
       if (editing?.account) {
         await api.updateAccount(editing.index, account);
+        // Keep the active session badge in sync if its username changed.
+        if (session && editing.account.username === session) setSession(account.username);
       } else {
         await api.addAccount(account);
       }
@@ -75,20 +84,22 @@ export default function App() {
     }
   };
 
-  const onDelete = async () => {
+  const requestDelete = () => {
     if (selected < 0 || selected >= accounts.length) {
       toast.show(t("account.select.toDelete"), "warning");
       return;
     }
-    const selectedAccount = accounts[selected];
-    const username = selectedAccount?.username?.trim();
-    const confirmMessage = username
-      ? t("account.delete.confirm.named").replace("{name}", username)
-      : t("account.delete.confirm");
-    if (!window.confirm(confirmMessage)) return;
+    setPendingDelete({ index: selected, account: accounts[selected] });
+  };
+
+  const confirmDelete = async () => {
+    if (!pendingDelete) return;
+    const { index, account } = pendingDelete;
     try {
-      await api.deleteAccount(selected);
+      await api.deleteAccount(index);
+      if (session && account.username === session) setSession(null);
       setSelected(-1);
+      setPendingDelete(null);
       reloadAccounts();
     } catch (e) {
       toast.show(`${t("error.title")}: ${String(e)}`, "error");
@@ -109,6 +120,12 @@ export default function App() {
       toast.show(t("login.select.account"), "warning");
       return;
     }
+    const account = accounts[index];
+    // Already signed in with this account: show status/logout instead of re-running login.
+    if (account && session && account.username === session) {
+      setShowLoginStatus(true);
+      return;
+    }
     loginInFlight.current = true;
     setBusy(true);
     try {
@@ -122,6 +139,7 @@ export default function App() {
       }
       await api.autoLogin(index);
       const submitted = (await api.getSettings()).auto_click_login;
+      if (account) setSession(account.username);
       toast.show(submitted ? t("login.success.submitted") : t("login.success"), "success");
     } catch (e) {
       toast.show(t("login.failed.details") + " (" + String(e) + ")", "error");
@@ -129,6 +147,12 @@ export default function App() {
       loginInFlight.current = false;
       setBusy(false);
     }
+  };
+
+  const onLogout = () => {
+    setSession(null);
+    setShowLoginStatus(false);
+    toast.show(t("login.logout.success"), "success");
   };
 
   const launchOrFocus = async () => {
@@ -191,25 +215,43 @@ export default function App() {
           <AccountTable
             accounts={accounts}
             selected={selected}
+            loggedInUsername={session}
             onSelect={setSelected}
             onLogin={performLogin}
           />
           <div className="toolbar">
-            <button className="icon-btn toolbar-btn toolbar-btn-add" title={t("account.add")} onClick={() => setEditing({ account: null, index: -1 })}>
-              <img src={addIcon} alt="" aria-hidden="true" width={26} height={26} />
-              <span className="toolbar-btn-label">{t("account.add")}</span>
+            <button
+              className="toolbar-btn toolbar-btn-icon toolbar-btn-add tooltip"
+              data-tooltip={t("account.add")}
+              aria-label={t("account.add")}
+              onClick={() => setEditing({ account: null, index: -1 })}
+            >
+              <img src={addIcon} alt="" aria-hidden="true" />
             </button>
-            <button className="icon-btn toolbar-btn toolbar-btn-edit" title={t("account.edit")} onClick={onEdit}>
-              <img src={editIcon} alt="" aria-hidden="true" width={26} height={26} />
-              <span className="toolbar-btn-label">{t("account.edit")}</span>
+            <button
+              className="toolbar-btn toolbar-btn-icon toolbar-btn-edit tooltip"
+              data-tooltip={t("account.edit")}
+              aria-label={t("account.edit")}
+              onClick={onEdit}
+            >
+              <img src={editIcon} alt="" aria-hidden="true" />
             </button>
-            <button className="icon-btn toolbar-btn toolbar-btn-delete" title={t("account.delete")} onClick={onDelete}>
-              <img src={deleteIcon} alt="" aria-hidden="true" width={26} height={26} />
-              <span className="toolbar-btn-label">{t("account.delete")}</span>
+            <button
+              className="toolbar-btn toolbar-btn-icon toolbar-btn-delete tooltip"
+              data-tooltip={t("account.delete")}
+              aria-label={t("account.delete")}
+              onClick={requestDelete}
+            >
+              <img src={deleteIcon} alt="" aria-hidden="true" />
             </button>
             <span className="toolbar-sep" />
-            <button className="icon-btn toolbar-btn toolbar-btn-login" title={t("account.login")} disabled={busy} onClick={() => performLogin(selected)}>
-              <img src={loginIcon} alt="" aria-hidden="true" width={28} height={28} />
+            <button
+              className="toolbar-btn toolbar-btn-login"
+              aria-label={t("account.login")}
+              disabled={busy}
+              onClick={() => performLogin(selected)}
+            >
+              <img src={loginIcon} alt="" aria-hidden="true" />
               <span className="toolbar-btn-label">{t("account.login")}</span>
             </button>
           </div>
@@ -245,6 +287,32 @@ export default function App() {
         />
       )}
       {showWelcome && <WelcomeDialog onClose={closeWelcome} />}
+      {pendingDelete && (
+        <ConfirmDialog
+          title={t("account.delete.title")}
+          message={
+            pendingDelete.account.username.trim()
+              ? t("account.delete.confirm.named").replace(
+                  "{name}",
+                  pendingDelete.account.username.trim(),
+                )
+              : t("account.delete.confirm")
+          }
+          detail={t("account.delete.detail")}
+          confirmLabel={t("account.delete.button")}
+          cancelLabel={t("account.cancel")}
+          danger
+          onConfirm={confirmDelete}
+          onCancel={() => setPendingDelete(null)}
+        />
+      )}
+      {showLoginStatus && session && (
+        <LoginStatusDialog
+          username={session}
+          onLogout={onLogout}
+          onClose={() => setShowLoginStatus(false)}
+        />
+      )}
     </div>
   );
 }

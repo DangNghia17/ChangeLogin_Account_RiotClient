@@ -1,121 +1,154 @@
 # Riot Account Manager
 
 [![GitHub](https://img.shields.io/badge/GitHub-Repository-blue?style=flat-square&logo=github)](https://github.com/DangNghia17/ChangeLogin_Account_RiotClient)
-[![Release](https://img.shields.io/badge/Release-v2.0.0-green?style=flat-square)](https://github.com/DangNghia17/ChangeLogin_Account_RiotClient/releases)
+[![Release](https://img.shields.io/badge/Release-v3.0.0-green?style=flat-square)](https://github.com/DangNghia17/ChangeLogin_Account_RiotClient/releases)
 [![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
+[![Tauri](https://img.shields.io/badge/Tauri-2.x-24C8DB?style=flat-square&logo=tauri)](https://tauri.app/)
+[![React](https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react)](https://react.dev/)
+
+> Ứng dụng desktop nhẹ giúp quản lý và đăng nhập nhanh nhiều tài khoản Riot Games (League of Legends, VALORANT, …).
+
+---
 
 ## Giới thiệu
 
-Riot Account Manager là công cụ hỗ trợ quản lý và đăng nhập nhanh vào nhiều tài khoản Riot Games (League of Legends, VALORANT, etc.). Ứng dụng giúp bạn chuyển đổi giữa các tài khoản một cách nhanh chóng và tiện lợi.
+**Riot Account Manager** là công cụ desktop (Tauri + React) giúp bạn lưu trữ nhiều tài khoản Riot Games một cách an toàn và **tự động điền thông tin đăng nhập** vào Riot Client chỉ với một cú nhấp chuột. Thay vì gõ lại username/password mỗi lần đổi tài khoản, bạn chỉ cần chọn tài khoản và bấm **Đăng nhập**.
 
-## Tính năng
+Ứng dụng hoạt động hoàn toàn cục bộ, mã hóa dữ liệu nhạy cảm và **không gửi bất kỳ thông tin nào lên server**.
 
-- ✅ Quản lý nhiều tài khoản Riot Games trong một nơi
-- ✅ Đăng nhập tự động - chỉ cần chọn tài khoản và bấm nút
-- ✅ Mở và focus vào Riot Client từ ứng dụng
-- ✅ Hiển thị trạng thái Riot Client (đang chạy/chưa chạy)
-- ✅ Lưu trữ an toàn thông tin đăng nhập (mã hóa AES-256)
-- ✅ Chuyển đổi tài khoản nhanh chóng, tiết kiệm thời gian
-- ✅ Hỗ trợ đa ngôn ngữ (Tiếng Việt và Tiếng Anh)
+## Tính năng nổi bật
 
-## Lợi ích
+- 🗂️ **Quản lý tài khoản** — lưu trữ nhiều tài khoản Riot trong một nơi.
+- ➕ ✏️ 🗑️ **Thêm / Sửa / Xóa** — cụm nút thao tác trực quan, icon-only kèm tooltip.
+- ⚠️ **Xác nhận trước khi xóa** — hộp thoại xác nhận để tránh xóa nhầm, không thể hoàn tác.
+- 👋 **Hướng dẫn người dùng lần đầu** — màn hình chào mừng (first-run) thân thiện.
+- 🔐 **Quản lý trạng thái đăng nhập** — nhận biết tài khoản đang đăng nhập, không đăng nhập lại thừa.
+- 🚪 **Đăng xuất** — thoát phiên hiện tại để chuyển sang tài khoản khác.
+- 🎨 **Giao diện cải tiến** — nút bo góc hiện đại, hiệu ứng hover/active, shadow nhẹ.
+- ✨ **Trải nghiệm người dùng tốt hơn** — toast thông báo, badge trạng thái, animation mượt.
+- 🌐 **Đa ngôn ngữ** — Tiếng Việt & Tiếng Anh.
+- 🛡️ **An toàn với game** — chỉ mô phỏng thao tác bàn phím/chuột, KHÔNG hook/inject, tương thích Vanguard.
 
-So với đăng nhập thủ công:
-- ⏱️ **Tiết kiệm thời gian**: Từ 30-60 giây → 2-3 giây
-- 🎯 **Chính xác**: Không lo nhập sai username/password
-- 🎨 **Tiện lợi**: Quản lý nhiều tài khoản dễ dàng
-- 🔒 **An toàn**: Mã hóa và lưu trữ cục bộ
-- ⚡ **Hiệu quả**: Tự động hóa quy trình đăng nhập
+## Công nghệ sử dụng
 
-## An toàn và Bảo mật
-
-### Có ảnh hưởng đến game không?
-
-**KHÔNG.** Ứng dụng hoàn toàn an toàn:
-- Chỉ sử dụng Windows API chuẩn (Robot, Process)
-- KHÔNG hook process, KHÔNG inject DLL, KHÔNG can thiệp vào bộ nhớ
-- Hoàn toàn tương thích với Vanguard (anti-cheat của Riot)
-- Chỉ mô phỏng thao tác bàn phím/chuột như người dùng thực
-- Không can thiệp vào game client hay game logic
-
-### Có bị lộ thông tin không?
-
-**KHÔNG.** Thông tin được bảo vệ tối đa:
-- Mã hóa AES-256 cho tất cả dữ liệu nhạy cảm
-- Lưu trữ cục bộ trong `%LOCALAPPDATA%\RiotAccountManager\`
-- KHÔNG gửi dữ liệu lên server, KHÔNG kết nối internet
-- Mã nguồn mở (MIT License) - bạn có thể kiểm tra
-- Chỉ bạn mới có quyền truy cập dữ liệu trên máy tính của mình
-
-## 📦 Tải xuống
-
-### Khuyến nghị (Installer)
-- **File:** `RiotAccountManager_*_x64-setup.exe` (NSIS installer)
-- Cài đặt có shortcut, kèm WebView2 bootstrapper
-
-### Portable ZIP
-- **File:** `RiotAccountManager-portable.zip` — chứa `RiotAccountManager-Setup.exe` + `HUONG-DAN.txt`
-- Giải nén → chạy `RiotAccountManager-Setup.exe` để cài
-
-### Source code
-- Clone repo hoặc tải từ GitHub — xem `README_DEV.md` để build
-
-📥 **Tải xuống:** [Releases](https://github.com/DangNghia17/ChangeLogin_Account_RiotClient/releases)
+| Thành phần | Công nghệ |
+|------------|-----------|
+| Khung ứng dụng desktop | [Tauri 2.x](https://tauri.app/) |
+| Giao diện | [React 18](https://react.dev/) + TypeScript |
+| Build tool | [Vite 5](https://vitejs.dev/) |
+| Lõi nghiệp vụ | Rust (crate `ram-core`) |
+| Mã hóa dữ liệu | AES (crate `aes`/`ecb`) + SHA-256 |
+| Đóng gói | NSIS installer (Windows) |
 
 ## Cài đặt
 
-1. Tải `*-setup.exe` hoặc `RiotAccountManager-portable.zip` từ [Releases](https://github.com/DangNghia17/ChangeLogin_Account_RiotClient/releases)
-2. Nếu Windows SmartScreen cảnh báo: bấm **More info** → **Run anyway** (app chưa ký code signing — bình thường với bản mới)
-3. Chạy installer → mở app từ Start Menu
+### Dành cho người dùng cuối
 
-**Lưu ý:** Không cần Java. Cần Windows 10/11. Nếu app không mở, xem log tại `%LOCALAPPDATA%\RiotAccountManager\startup.log`
+1. Tải `*-setup.exe` hoặc `RiotAccountManager-portable.zip` từ trang [Releases](https://github.com/DangNghia17/ChangeLogin_Account_RiotClient/releases).
+2. Nếu Windows SmartScreen cảnh báo: bấm **More info → Run anyway** (app chưa ký code signing).
+3. Chạy installer và mở app từ Start Menu.
 
-## Hướng dẫn sử dụng
+> **Yêu cầu:** Windows 10/11, Riot Client đã cài, WebView2 (có sẵn trên Windows 10/11). Không cần Java.
 
-### Bước 1: Cấu hình Riot Client
-1. Mở ứng dụng
-2. Bấm nút "Chọn" để chọn đường dẫn đến file `RiotClientServices.exe`
-3. Đường dẫn thường là: `C:\Riot Games\Riot Client\RiotClientServices.exe`
+### Dành cho nhà phát triển
 
-### Bước 2: Thêm tài khoản
-1. Bấm nút "Thêm tài khoản" (icon người với dấu +)
-2. Nhập Username, Password, và chọn Region
-3. (Tùy chọn) Thêm Ghi chú để phân biệt các tài khoản
-4. Bấm "Lưu"
+```bash
+# Yêu cầu: Node.js >= 18, Rust toolchain (rustup)
+git clone https://github.com/DangNghia17/ChangeLogin_Account_RiotClient.git
+cd ChangeLogin_Account_RiotClient
+npm install            # cài deps ở root + app-tauri (qua postinstall)
+```
 
-### Bước 3: Đăng nhập
-1. Đảm bảo Riot Client đã được mở (bấm nút "Mở Riot Client" nếu chưa)
-2. Chọn tài khoản từ danh sách
-3. Bấm nút "Đăng nhập" (icon khóa)
-4. Ứng dụng sẽ tự động điền thông tin đăng nhập
-5. Kiểm tra thông tin và bấm Enter để đăng nhập
+## Chạy dự án
 
-### Quản lý tài khoản
-- **Sửa**: Chọn tài khoản và bấm nút "Sửa" (icon bút chì)
-- **Xóa**: Chọn tài khoản và bấm nút "Xóa" (icon thùng rác)
+```bash
+# Xem trước UI trên trình duyệt (web preview, dùng mock store)
+npm run web
 
-## Yêu cầu hệ thống
+# Chạy app desktop đầy đủ (Tauri dev)
+npm run tauri:dev
+```
 
-- Windows 10/11
-- Riot Client đã được cài đặt
-- Không cần cài Java (ứng dụng Tauri native)
-- WebView2 (có sẵn trên Windows 10/11)
+## Build
 
-## Hỗ trợ
+```bash
+# Build phần web (TypeScript + Vite)
+npm run build
 
-Nếu gặp vấn đề, vui lòng:
-1. Kiểm tra Riot Client đã được mở chưa
-2. Kiểm tra đường dẫn Riot Client có đúng không
-3. Đảm bảo Riot Client đang hiển thị màn hình đăng nhập
-4. Tạo [issue trên GitHub](https://github.com/DangNghia17/ChangeLogin_Account_RiotClient/issues) nếu vẫn gặp vấn đề
+# Build app desktop (installer)
+npm run tauri:build
+
+# Kiểm tra chất lượng
+npm run check     # typecheck web + cargo check/test cho ram-core
+npm run lint      # tsc --noEmit
+npm run test      # cargo test -p ram-core
+```
+
+## Cấu trúc project
+
+```
+.
+├── app-tauri/                 # Ứng dụng Tauri + React
+│   ├── src/                   # Mã nguồn frontend (React/TypeScript)
+│   │   ├── components/        # AccountTable, ConfigPanel, ConfirmDialog, Toast
+│   │   ├── dialogs/           # Account, Settings, About, Welcome, LoginStatus
+│   │   ├── i18n/              # Đa ngôn ngữ (vi/en)
+│   │   ├── lib/               # api, platform, mock-store
+│   │   ├── App.tsx            # Thành phần gốc
+│   │   └── styles.css         # Toàn bộ style
+│   ├── src-tauri/             # Lớp shell Tauri (Rust) + cấu hình
+│   └── crates/core/           # ram-core: lõi nghiệp vụ Rust (store, crypto, riot…)
+├── docs/                      # Tài liệu bổ sung
+├── scripts/                   # Script tiện ích (doctor.mjs…)
+├── README.md                  # Tài liệu này
+├── RELEASE_v3.0.0.md          # Ghi chú phát hành
+└── REPORT_v3.0.0.md           # Báo cáo thay đổi v3.0.0
+```
+
+## Hướng dẫn sử dụng nhanh
+
+1. **Cấu hình Riot Client** — bấm **Chọn** để trỏ tới `RiotClientServices.exe` (thường ở `C:\Riot Games\Riot Client\RiotClientServices.exe`).
+2. **Thêm tài khoản** — bấm nút ➕, nhập Username/Password/Region, bấm **Lưu**.
+3. **Đăng nhập** — chọn tài khoản → bấm **Đăng nhập** để tự động điền vào Riot Client.
+4. **Sửa / Xóa** — chọn tài khoản rồi bấm ✏️ hoặc 🗑️ (xóa sẽ hỏi xác nhận).
+5. **Đăng xuất** — nếu đang ở phiên một tài khoản, bấm Đăng nhập lại tài khoản đó để mở hộp thoại trạng thái và **Đăng xuất**.
+
+## An toàn & Bảo mật
+
+- **Không ảnh hưởng game:** chỉ dùng API chuẩn của hệ điều hành để mô phỏng thao tác bàn phím/chuột. KHÔNG hook process, KHÔNG inject DLL, tương thích Vanguard.
+- **Không lộ thông tin:** dữ liệu nhạy cảm được mã hóa và lưu cục bộ trong `%LOCALAPPDATA%\RiotAccountManager\`. KHÔNG kết nối internet, KHÔNG gửi dữ liệu đi.
+- **Mã nguồn mở:** bạn có thể tự kiểm tra toàn bộ mã nguồn.
+
+## Roadmap
+
+- [ ] Tìm kiếm / lọc tài khoản trong danh sách.
+- [ ] Sắp xếp & nhóm tài khoản theo region/ghi chú.
+- [ ] Import/Export & sao lưu dữ liệu có mã hóa.
+- [ ] Tùy biến theme (sáng/tối).
+- [ ] Phím tắt toàn cục để đăng nhập nhanh.
+- [ ] Hỗ trợ thêm nền tảng (macOS/Linux) nếu khả thi.
 
 ## License
 
-MIT License - Xem file LICENSE để biết thêm chi tiết.
+Phát hành theo giấy phép **MIT** — xem file [LICENSE](LICENSE) để biết chi tiết.
 
-## Tác giả
+## Changelog
 
-Riot Account Manager - Mã nguồn mở, miễn phí sử dụng.
+### v3.0.0
+- Thiết kế lại cụm nút thao tác.
+- Chuyển sang icon-only hiện đại.
+- Bổ sung xác nhận trước khi xóa.
+- Thêm hướng dẫn cho người dùng lần đầu.
+- Cải thiện xử lý khi đã đăng nhập.
+- Bổ sung chức năng đăng xuất.
+- Refactor và tối ưu giao diện.
+- Cải thiện trải nghiệm người dùng.
+
+### v2.0.0
+- Chuyển toàn bộ ứng dụng từ Java sang Tauri + React (native, không cần Java).
+- Mã hóa và tự động nhập dữ liệu từ bản Java cũ.
+- Hỗ trợ đa ngôn ngữ (vi/en), cài đặt khởi động cùng Windows.
+
+---
 
 **GitHub:** [https://github.com/DangNghia17/ChangeLogin_Account_RiotClient](https://github.com/DangNghia17/ChangeLogin_Account_RiotClient)
-
