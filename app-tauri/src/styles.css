@@ -15,6 +15,8 @@
   --row-selected: #ede7f6;
   --header-bg: #f8f9fa;
   --gray: #e0e0e0;
+  --toolbar-action-min-width: 78px;
+  --toolbar-login-min-width: 104px;
 }
 
 * { box-sizing: border-box; }
@@ -91,10 +93,12 @@ body {
 .empty-row { color: var(--text-secondary); }
 
 .toolbar {
-  display: flex; align-items: center; justify-content: center; gap: 6px;
-  padding: 8px 12px; border-top: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 10px 12px;
+  border-top: 1px solid var(--border);
+  background: linear-gradient(180deg, #fcfcff 0%, #f4f5fb 100%);
 }
-.toolbar-sep { width: 1px; height: 28px; background: var(--border); margin: 0 10px; }
+.toolbar-sep { width: 1px; height: 36px; background: var(--border); margin: 0 4px; }
 
 .icon-btn {
   background: transparent; border: none; cursor: pointer; border-radius: 6px;
@@ -104,6 +108,57 @@ body {
 .icon-btn:hover { background: rgba(0,0,0,0.06); }
 .icon-btn.ghost:hover { background: rgba(255,255,255,0.18); }
 .icon-btn:disabled { opacity: 0.5; cursor: default; }
+
+.toolbar-btn {
+  min-width: var(--toolbar-action-min-width);
+  padding: 8px 10px;
+  border: 1px solid #e9e5f8;
+  border-radius: 10px;
+  background: #fff;
+  color: var(--text);
+  display: inline-flex;
+  flex-direction: column;
+  gap: 4px;
+  box-shadow: 0 1px 2px rgba(35, 24, 84, 0.08);
+}
+.toolbar-btn img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+.toolbar-btn-label {
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+.toolbar-btn:hover:not(:disabled) {
+  background: #f5f0ff;
+  border-color: #d8cdfc;
+  transform: translateY(-1px);
+}
+.toolbar-btn:disabled {
+  opacity: 0.6;
+}
+.toolbar-btn-login {
+  min-width: var(--toolbar-login-min-width);
+  flex-direction: row;
+  gap: 7px;
+  padding: 9px 12px;
+  background: var(--primary);
+  border-color: transparent;
+  color: #fff;
+}
+.toolbar-btn-login img {
+  filter: brightness(0) invert(1);
+}
+.toolbar-btn-login .toolbar-btn-label {
+  font-size: 11px;
+}
+.toolbar-btn-login:hover:not(:disabled) {
+  background: var(--primary-hover);
+  border-color: transparent;
+}
 
 /* Footer / config */
 .app-footer { padding: 0 10px 10px; }

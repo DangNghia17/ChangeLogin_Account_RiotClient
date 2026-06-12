@@ -80,7 +80,12 @@ export default function App() {
       toast.show(t("account.select.toDelete"), "warning");
       return;
     }
-    if (!window.confirm(t("account.delete.confirm"))) return;
+    const selectedAccount = accounts[selected];
+    const username = selectedAccount?.username?.trim();
+    const confirmMessage = username
+      ? t("account.delete.confirm.named").replace("{name}", username)
+      : t("account.delete.confirm");
+    if (!window.confirm(confirmMessage)) return;
     try {
       await api.deleteAccount(selected);
       setSelected(-1);
@@ -190,18 +195,22 @@ export default function App() {
             onLogin={performLogin}
           />
           <div className="toolbar">
-            <button className="icon-btn" title={t("account.add")} onClick={() => setEditing({ account: null, index: -1 })}>
-              <img src={addIcon} alt="" width={26} height={26} />
+            <button className="icon-btn toolbar-btn" title={t("account.add")} onClick={() => setEditing({ account: null, index: -1 })}>
+              <img src={addIcon} alt="" aria-hidden="true" width={26} height={26} />
+              <span className="toolbar-btn-label">{t("account.add")}</span>
             </button>
-            <button className="icon-btn" title={t("account.edit")} onClick={onEdit}>
-              <img src={editIcon} alt="" width={26} height={26} />
+            <button className="icon-btn toolbar-btn" title={t("account.edit")} onClick={onEdit}>
+              <img src={editIcon} alt="" aria-hidden="true" width={26} height={26} />
+              <span className="toolbar-btn-label">{t("account.edit")}</span>
             </button>
-            <button className="icon-btn" title={t("account.delete")} onClick={onDelete}>
-              <img src={deleteIcon} alt="" width={26} height={26} />
+            <button className="icon-btn toolbar-btn" title={t("account.delete")} onClick={onDelete}>
+              <img src={deleteIcon} alt="" aria-hidden="true" width={26} height={26} />
+              <span className="toolbar-btn-label">{t("account.delete")}</span>
             </button>
             <span className="toolbar-sep" />
-            <button className="icon-btn" title={t("account.login")} disabled={busy} onClick={() => performLogin(selected)}>
-              <img src={loginIcon} alt="" width={28} height={28} />
+            <button className="icon-btn toolbar-btn toolbar-btn-login" title={t("account.login")} disabled={busy} onClick={() => performLogin(selected)}>
+              <img src={loginIcon} alt="" aria-hidden="true" width={28} height={28} />
+              <span className="toolbar-btn-label">{t("account.login")}</span>
             </button>
           </div>
         </div>
