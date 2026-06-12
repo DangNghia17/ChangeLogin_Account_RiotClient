@@ -10,11 +10,17 @@
   --success: #43a047;
   --error: #e53935;
   --warning: #ff8c00;
+  --edit: #f5a623;
   --border: #e0e0e0;
   --row-hover: #f0f0f0;
   --row-selected: #ede7f6;
   --header-bg: #f8f9fa;
   --gray: #e0e0e0;
+  --toolbar-action-min-width: 78px;
+  --toolbar-login-min-width: 104px;
+  --toolbar-action-border: #e9e5f8;
+  --toolbar-action-shadow: 0 1px 2px rgba(35, 24, 84, 0.08);
+  --toolbar-separator: #c7cfdf;
 }
 
 * { box-sizing: border-box; }
@@ -91,10 +97,12 @@ body {
 .empty-row { color: var(--text-secondary); }
 
 .toolbar {
-  display: flex; align-items: center; justify-content: center; gap: 6px;
-  padding: 8px 12px; border-top: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 10px 12px;
+  border-top: 1px solid var(--border);
+  background: #edf1fb;
 }
-.toolbar-sep { width: 1px; height: 28px; background: var(--border); margin: 0 10px; }
+.toolbar-sep { width: 1px; height: 36px; background: var(--toolbar-separator); margin: 0 4px; }
 
 .icon-btn {
   background: transparent; border: none; cursor: pointer; border-radius: 6px;
@@ -104,6 +112,89 @@ body {
 .icon-btn:hover { background: rgba(0,0,0,0.06); }
 .icon-btn.ghost:hover { background: rgba(255,255,255,0.18); }
 .icon-btn:disabled { opacity: 0.5; cursor: default; }
+
+.toolbar-btn {
+  min-width: var(--toolbar-action-min-width);
+  padding: 8px 10px;
+  border: 1px solid var(--toolbar-action-border);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--text);
+  display: inline-flex;
+  flex-direction: column;
+  gap: 4px;
+  box-shadow: var(--toolbar-action-shadow);
+}
+.toolbar-btn img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+.toolbar-btn-label {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+.toolbar-btn:hover:not(:disabled) {
+  background: #f5f0ff;
+  border-color: #d8cdfc;
+  transform: translateY(-1px);
+}
+.toolbar-btn:disabled {
+  opacity: 0.6;
+}
+.toolbar-btn-add {
+  background: #2eaf5d;
+  border-color: #23934b;
+  color: #fff;
+}
+.toolbar-btn-edit {
+  background: var(--edit);
+  border-color: #dd9013;
+  color: #fff;
+}
+.toolbar-btn-delete {
+  background: var(--error);
+  border-color: #c62828;
+  color: #fff;
+}
+.toolbar-btn-add img,
+.toolbar-btn-edit img,
+.toolbar-btn-delete img {
+  filter: brightness(0) invert(1);
+}
+.toolbar-btn-add:hover:not(:disabled) {
+  background: #25944d;
+  border-color: #1d7d3f;
+}
+.toolbar-btn-edit:hover:not(:disabled) {
+  background: #e89a1f;
+  border-color: #d08108;
+}
+.toolbar-btn-delete:hover:not(:disabled) {
+  background: #d32f2f;
+  border-color: #b71c1c;
+}
+.toolbar-btn-login {
+  min-width: var(--toolbar-login-min-width);
+  flex-direction: row;
+  gap: 7px;
+  padding: 9px 12px;
+  background: var(--primary);
+  border-color: transparent;
+  color: #fff;
+}
+.toolbar-btn-login img {
+  filter: brightness(0) invert(1);
+}
+.toolbar-btn-login .toolbar-btn-label {
+  font-size: 12px;
+}
+.toolbar-btn-login:hover:not(:disabled) {
+  background: var(--primary-hover);
+  border-color: transparent;
+}
 
 /* Footer / config */
 .app-footer { padding: 0 10px 10px; }
