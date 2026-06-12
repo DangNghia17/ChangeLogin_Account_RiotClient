@@ -1,7 +1,7 @@
 # Riot Account Manager
 
 [![GitHub](https://img.shields.io/badge/GitHub-Repository-blue?style=flat-square&logo=github)](https://github.com/DangNghia17/ChangeLogin_Account_RiotClient)
-[![Release](https://img.shields.io/badge/Release-v3.0.0-green?style=flat-square)](https://github.com/DangNghia17/ChangeLogin_Account_RiotClient/releases)
+[![Release](https://img.shields.io/badge/Release-v3.1.0-green?style=flat-square)](https://github.com/DangNghia17/ChangeLogin_Account_RiotClient/releases)
 [![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
 [![Tauri](https://img.shields.io/badge/Tauri-2.x-24C8DB?style=flat-square&logo=tauri)](https://tauri.app/)
 [![React](https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react)](https://react.dev/)
@@ -26,6 +26,12 @@
 - 🚪 **Đăng xuất** — thoát phiên hiện tại để chuyển sang tài khoản khác.
 - 🎨 **Giao diện cải tiến** — nút bo góc hiện đại, hiệu ứng hover/active, shadow nhẹ.
 - ✨ **Trải nghiệm người dùng tốt hơn** — toast thông báo, badge trạng thái, animation mượt.
+- 📤 **Export dữ liệu** — xuất toàn bộ dữ liệu ra file `.backup`.
+- 📥 **Import dữ liệu** — khôi phục dữ liệu từ file backup.
+- 🔑 **Sao lưu được mã hóa bằng mật khẩu** — AES-256-GCM + PBKDF2 (Web Crypto API); mật khẩu không bao giờ được lưu.
+- ♻️ **Khôi phục dữ liệu từ file backup** — có xác nhận trước khi ghi đè và kiểm tra toàn vẹn.
+- 🌗 **Light / Dark Theme** — hỗ trợ giao diện Sáng, Tối và theo Hệ thống.
+- 💾 **Ghi nhớ lựa chọn giao diện** — giữ nguyên theme sau khi khởi động lại.
 - 🌐 **Đa ngôn ngữ** — Tiếng Việt & Tiếng Anh.
 - 🛡️ **An toàn với game** — chỉ mô phỏng thao tác bàn phím/chuột, KHÔNG hook/inject, tương thích Vanguard.
 
@@ -91,11 +97,12 @@ npm run test      # cargo test -p ram-core
 ├── app-tauri/                 # Ứng dụng Tauri + React
 │   ├── src/                   # Mã nguồn frontend (React/TypeScript)
 │   │   ├── components/        # AccountTable, ConfigPanel, ConfirmDialog, Toast
-│   │   ├── dialogs/           # Account, Settings, About, Welcome, LoginStatus
+│   │   ├── dialogs/           # Account, Settings, About, Welcome, LoginStatus, Backup
 │   │   ├── i18n/              # Đa ngôn ngữ (vi/en)
-│   │   ├── lib/               # api, platform, mock-store
+│   │   ├── theme/             # ThemeContext (Light/Dark/System)
+│   │   ├── lib/               # api, platform, mock-store, backup (mã hóa)
 │   │   ├── App.tsx            # Thành phần gốc
-│   │   └── styles.css         # Toàn bộ style
+│   │   └── styles.css         # Toàn bộ style (biến theme sáng/tối)
 │   ├── src-tauri/             # Lớp shell Tauri (Rust) + cấu hình
 │   └── crates/core/           # ram-core: lõi nghiệp vụ Rust (store, crypto, riot…)
 ├── docs/                      # Tài liệu bổ sung
@@ -112,6 +119,8 @@ npm run test      # cargo test -p ram-core
 3. **Đăng nhập** — chọn tài khoản → bấm **Đăng nhập** để tự động điền vào Riot Client.
 4. **Sửa / Xóa** — chọn tài khoản rồi bấm ✏️ hoặc 🗑️ (xóa sẽ hỏi xác nhận).
 5. **Đăng xuất** — nếu đang ở phiên một tài khoản, bấm Đăng nhập lại tài khoản đó để mở hộp thoại trạng thái và **Đăng xuất**.
+6. **Sao lưu / Khôi phục** — mở **Cài đặt → Sao lưu & Khôi phục**, chọn **Xuất dữ liệu** (đặt mật khẩu để mã hóa file `.backup`) hoặc **Nhập dữ liệu** (chọn file, nhập mật khẩu, xác nhận ghi đè).
+7. **Đổi giao diện** — bấm nút ☀/🌙 trên thanh tiêu đề để chuyển nhanh Sáng/Tối, hoặc chọn Sáng/Tối/Hệ thống trong **Cài đặt → Giao diện**.
 
 ## An toàn & Bảo mật
 
@@ -121,10 +130,10 @@ npm run test      # cargo test -p ram-core
 
 ## Roadmap
 
+- [x] Import/Export & sao lưu dữ liệu có mã hóa. ✅ (v3.1.0)
+- [x] Tùy biến theme (sáng/tối) + ghi nhớ lựa chọn. ✅ (v3.1.0)
 - [ ] Tìm kiếm / lọc tài khoản trong danh sách.
 - [ ] Sắp xếp & nhóm tài khoản theo region/ghi chú.
-- [ ] Import/Export & sao lưu dữ liệu có mã hóa.
-- [ ] Tùy biến theme (sáng/tối).
 - [ ] Phím tắt toàn cục để đăng nhập nhanh.
 - [ ] Hỗ trợ thêm nền tảng (macOS/Linux) nếu khả thi.
 
@@ -133,6 +142,21 @@ npm run test      # cargo test -p ram-core
 Phát hành theo giấy phép **MIT** — xem file [LICENSE](LICENSE) để biết chi tiết.
 
 ## Changelog
+
+### v3.1.0
+
+✨ **New Features**
+- Import dữ liệu.
+- Export dữ liệu.
+- Sao lưu có mã hóa bằng mật khẩu (AES-256-GCM + PBKDF2).
+- Khôi phục dữ liệu từ file backup.
+- Hỗ trợ Light/Dark Theme (kèm tùy chọn theo Hệ thống).
+- Ghi nhớ cài đặt giao diện giữa các lần mở ứng dụng.
+
+🔒 **Security**
+- Backup được mã hóa đầu-cuối bằng mật khẩu người dùng.
+- Không lưu mật khẩu ở bất kỳ đâu.
+- Kiểm tra tính toàn vẹn dữ liệu khi khôi phục (AES-GCM authentication + kiểm tra định dạng/phiên bản).
 
 ### v3.0.0
 - Thiết kế lại cụm nút thao tác.
