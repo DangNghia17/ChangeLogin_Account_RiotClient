@@ -30,6 +30,12 @@ export const api = {
       : Promise.resolve(mockStore.deleteAccount(index));
   },
 
+  replaceAccounts(accounts: Account[]): Promise<Account[]> {
+    return isTauri()
+      ? invoke("replace_accounts", { accounts })
+      : Promise.resolve(mockStore.replaceAccounts(accounts));
+  },
+
   riotStatus(): Promise<RiotStatus> {
     return isTauri() ? invoke("riot_status") : Promise.resolve(mockStore.riotStatus());
   },
@@ -97,5 +103,70 @@ export const api = {
     return isTauri()
       ? invoke("set_language", { language })
       : Promise.resolve(mockStore.setLanguage(language));
+  },
+
+  /**
+   * Saves text to a file the user chooses. On desktop this uses the native save
+   * dialog + a Rust write command; in the web preview it falls back to a browser
+   * download. Returns false if the user cancelled the save dialog.
+   */
+  async saveTextFile(defaultName: string, contents: string): Promise<boolean> {
+    if (!isTauri()) {
+      const blob = new Blob([contents], { type: "application/octet-stream" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = defaultName;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      return true;
+    }
+    const { save } = await import("@tauri-apps/plugin-dialog");
+    const path = await save({
+      defaultPath: defaultName,
+      filters: [{ name: "Backup", extensions: ["backup"] }],
+    });
+    if (typeof path !== "string") return false;
+    await invoke("write_text_file", { path, contents });
+    return true;
+  },
+
+  /**
+   * Lets the user pick a text file and returns its contents. On desktop this uses
+   * the native open dialog + a Rust read command; in the web preview it uses a
+   * hidden file input. Returns null if the user cancelled.
+   */
+  async pickAndReadTextFile(): Promise<string | null> {
+    if (!isTauri()) {
+      return new Promise<string | null>((resolve) => {
+        const input = document.createElement("input");
+        input.type = "file";
+        input.accept = ".backup,.enc,.json,application/json,application/octet-stream";
+        input.onchange = () => {
+          const file = input.files?.[0];
+          if (!file) {
+            resolve(null);
+            return;
+          }
+          const reader = new FileReader();
+          reader.onload = () => resolve(String(reader.result ?? ""));
+          reader.onerror = () => resolve(null);
+          reader.readAsText(file);
+        };
+        input.oncancel = () => resolve(null);
+        input.click();
+      });
+    }
+    const { open } = await import("@tauri-apps/plugin-dialog");
+    const selected = await open({
+      multiple: false,
+      directory: false,
+      title: "Backup",
+      filters: [{ name: "Backup", extensions: ["backup", "enc", "json"] }],
+    });
+    if (typeof selected !== "string") return null;
+    return invoke<string>("read_text_file", { path: selected });
   },
 };

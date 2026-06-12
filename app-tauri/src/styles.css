@@ -15,7 +15,36 @@
   --row-selected: #ede7f6;
   --header-bg: #f8f9fa;
   --gray: #e0e0e0;
+  --gray-hover: #d2d2d2;
   --toolbar-separator: #c7cfdf;
+  --toolbar-bg: #edf1fb;
+  --notes-bg: #fbf7ff;
+  --notes-border: #ece3fb;
+  --modal-shadow: rgba(0, 0, 0, 0.25);
+}
+
+/* Dark theme overrides — applied via data-theme on <html>. */
+:root[data-theme="dark"] {
+  --primary: #8c6eff;
+  --primary-hover: #a48bff;
+  --bg: #131419;
+  --surface: #1e2027;
+  --text: #e7e8ec;
+  --text-secondary: #9aa0aa;
+  --success: #4caf50;
+  --error: #ef5350;
+  --warning: #ffa726;
+  --border: #313440;
+  --row-hover: #262932;
+  --row-selected: #2e2747;
+  --header-bg: #1a1c22;
+  --gray: #353945;
+  --gray-hover: #424757;
+  --toolbar-separator: #3a3e49;
+  --toolbar-bg: #1a1c22;
+  --notes-bg: #221d33;
+  --notes-border: #352b52;
+  --modal-shadow: rgba(0, 0, 0, 0.6);
 }
 
 * { box-sizing: border-box; }
@@ -31,6 +60,23 @@ body {
   color: var(--text);
   background: var(--bg);
   user-select: none;
+}
+
+/* Smooth, non-reloading theme transitions for the main surfaces. */
+body,
+.card,
+.config-card,
+.modal,
+.toolbar,
+.account-table th,
+.account-table td,
+.path-field,
+.lang-select,
+.theme-select,
+.form-grid input,
+.form-grid select,
+.btn {
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
 }
 
 .app {
@@ -95,7 +141,7 @@ body {
   display: flex; align-items: center; justify-content: center; gap: 10px;
   padding: 12px;
   border-top: 1px solid var(--border);
-  background: #edf1fb;
+  background: var(--toolbar-bg);
 }
 .toolbar-sep { width: 1px; height: 26px; background: var(--toolbar-separator); margin: 0 2px; }
 
@@ -211,7 +257,7 @@ body {
   font-size: 13px; min-width: 0;
 }
 .path-full {
-  font-size: 10px; color: #646464; margin-top: 4px; word-break: break-all;
+  font-size: 10px; color: var(--text-secondary); margin-top: 4px; word-break: break-all;
 }
 .status-line { margin-top: 8px; font-size: 11px; }
 .status-line.ok { color: var(--success); }
@@ -228,7 +274,7 @@ body {
 .btn-success { background: var(--success); }
 .btn-success:hover:not(:disabled) { background: #388e3c; }
 .btn-gray { background: var(--gray); color: var(--text); }
-.btn-gray:hover:not(:disabled) { background: #d2d2d2; }
+.btn-gray:hover:not(:disabled) { background: var(--gray-hover); }
 .btn-danger { background: var(--error); }
 .btn-danger:hover:not(:disabled) { background: #c62828; }
 
@@ -239,7 +285,8 @@ body {
 }
 .modal {
   background: var(--surface); border-radius: 12px; padding: 22px 24px;
-  width: 380px; max-width: 92vw; box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+  width: 380px; max-width: 92vw; box-shadow: 0 12px 40px var(--modal-shadow);
+  color: var(--text);
 }
 .modal-wide { width: 460px; }
 .modal-title { margin: 0 0 16px; font-size: 16px; color: var(--primary); }
@@ -250,6 +297,7 @@ body {
 .form-grid input, .form-grid select {
   padding: 9px 12px; border: 1px solid var(--border); border-radius: 6px;
   font-size: 13px; font-family: inherit;
+  background: var(--surface); color: var(--text);
 }
 .form-error { color: var(--error); margin-top: 12px; font-size: 12px; }
 .modal-actions {
@@ -280,6 +328,35 @@ body {
 .setting-row span { display: flex; flex-direction: column; }
 .setting-row small { color: var(--text-secondary); margin-top: 2px; }
 
+.setting-block {
+  padding: 12px 0;
+  border-top: 1px solid var(--border);
+  margin-top: 6px;
+}
+.setting-block-title { font-weight: 700; font-size: 13px; }
+.setting-block-desc { color: var(--text-secondary); font-size: 11px; margin-top: 2px; }
+
+/* Theme segmented control */
+.theme-options {
+  display: inline-flex; margin-top: 10px; gap: 4px;
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 10px; padding: 4px;
+}
+.theme-option {
+  border: none; background: transparent; color: var(--text-secondary);
+  font-family: inherit; font-weight: 600; font-size: 12px;
+  padding: 6px 14px; border-radius: 7px; cursor: pointer;
+  transition: background-color 0.18s ease, color 0.18s ease;
+}
+.theme-option:hover { color: var(--text); }
+.theme-option.active {
+  background: var(--surface); color: var(--primary);
+  box-shadow: 0 1px 3px var(--modal-shadow);
+}
+
+.backup-actions { display: flex; gap: 10px; margin-top: 10px; margin-bottom: 6px; }
+.backup-actions .btn { flex: 1; }
+
 .about-content { max-height: 320px; overflow: auto; }
 .about-section { margin-bottom: 14px; }
 .about-section-title { font-weight: 700; color: var(--primary); font-size: 12px; }
@@ -288,7 +365,7 @@ body {
 .welcome-subtitle { font-weight: 700; font-size: 13px; margin: 0 0 6px; }
 .welcome-list { line-height: 1.9; padding-left: 18px; margin: 0 0 12px; }
 .welcome-notes {
-  background: #fbf7ff; border: 1px solid #ece3fb; border-radius: 10px;
+  background: var(--notes-bg); border: 1px solid var(--notes-border); border-radius: 10px;
   padding: 10px 14px; margin-top: 4px;
 }
 .welcome-notes-title { font-weight: 700; font-size: 12px; color: var(--primary); margin-bottom: 4px; }

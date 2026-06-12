@@ -39,6 +39,26 @@ pub fn delete_account(index: usize) -> Result<Vec<Account>, String> {
     Ok(accounts)
 }
 
+/// Replaces the entire account list (used when restoring an encrypted backup).
+#[tauri::command]
+pub fn replace_accounts(accounts: Vec<Account>) -> Result<Vec<Account>, String> {
+    store::save_accounts(&accounts)?;
+    Ok(accounts)
+}
+
+/// Reads a UTF-8 text file from an absolute path (used to load a backup file the
+/// user picked via the native dialog).
+#[tauri::command]
+pub fn read_text_file(path: String) -> Result<String, String> {
+    std::fs::read_to_string(&path).map_err(|e| format!("read failed: {e}"))
+}
+
+/// Writes UTF-8 text to an absolute path (used to save an encrypted backup file).
+#[tauri::command]
+pub fn write_text_file(path: String, contents: String) -> Result<(), String> {
+    std::fs::write(&path, contents.as_bytes()).map_err(|e| format!("write failed: {e}"))
+}
+
 #[tauri::command]
 pub fn riot_status() -> RiotStatus {
     riot::status()
