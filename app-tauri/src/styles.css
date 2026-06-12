@@ -104,6 +104,15 @@ body {
 .icon-btn:hover { background: rgba(0,0,0,0.06); }
 .icon-btn.ghost:hover { background: rgba(255,255,255,0.18); }
 .icon-btn:disabled { opacity: 0.5; cursor: default; }
+.login-btn {
+  gap: 4px;
+  padding: 6px 10px;
+}
+.login-btn span {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+}
 
 /* Footer / config */
 .app-footer { padding: 0 10px 10px; }

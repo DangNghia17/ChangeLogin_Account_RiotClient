@@ -32,6 +32,7 @@ export default function App() {
   const [editing, setEditing] = useState<{ account: Account | null; index: number } | null>(null);
   const [showSettings, setShowSettings] = useState(false);
   const [showAbout, setShowAbout] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [showWelcome, setShowWelcome] = useState(
     () => localStorage.getItem(WELCOME_KEY) !== "true",
   );
@@ -80,9 +81,13 @@ export default function App() {
       toast.show(t("account.select.toDelete"), "warning");
       return;
     }
-    if (!window.confirm(t("account.delete.confirm"))) return;
+    setShowDeleteConfirm(true);
+  };
+
+  const confirmDelete = async () => {
     try {
       await api.deleteAccount(selected);
+      setShowDeleteConfirm(false);
       setSelected(-1);
       reloadAccounts();
     } catch (e) {
@@ -200,8 +205,14 @@ export default function App() {
               <img src={deleteIcon} alt="" width={26} height={26} />
             </button>
             <span className="toolbar-sep" />
-            <button className="icon-btn" title={t("account.login")} disabled={busy} onClick={() => performLogin(selected)}>
+            <button
+              className="icon-btn login-btn"
+              title={t("account.login")}
+              disabled={busy}
+              onClick={() => performLogin(selected)}
+            >
               <img src={loginIcon} alt="" width={28} height={28} />
+              <span>{t("account.login")}</span>
             </button>
           </div>
         </div>
@@ -236,6 +247,22 @@ export default function App() {
         />
       )}
       {showWelcome && <WelcomeDialog onClose={closeWelcome} />}
+      {showDeleteConfirm && (
+        <div className="modal-overlay" onMouseDown={() => setShowDeleteConfirm(false)}>
+          <div className="modal" onMouseDown={(e) => e.stopPropagation()}>
+            <h2 className="modal-title">{t("account.delete.title")}</h2>
+            <div>{t("account.delete.confirm")}</div>
+            <div className="modal-actions">
+              <button className="btn btn-gray" onClick={() => setShowDeleteConfirm(false)}>
+                {t("account.cancel")}
+              </button>
+              <button className="btn btn-success" onClick={confirmDelete}>
+                {t("account.delete")}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
