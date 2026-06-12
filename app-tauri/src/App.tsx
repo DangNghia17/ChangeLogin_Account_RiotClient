@@ -76,7 +76,7 @@ export default function App() {
   };
 
   const onDelete = async () => {
-    if (selected < 0) {
+    if (selected < 0 || selected >= accounts.length) {
       toast.show(t("account.select.toDelete"), "warning");
       return;
     }
@@ -96,7 +96,7 @@ export default function App() {
   };
 
   const onEdit = () => {
-    if (selected < 0) {
+    if (selected < 0 || selected >= accounts.length) {
       toast.show(t("account.select.toEdit"), "warning");
       return;
     }
@@ -195,15 +195,15 @@ export default function App() {
             onLogin={performLogin}
           />
           <div className="toolbar">
-            <button className="icon-btn toolbar-btn" title={t("account.add")} onClick={() => setEditing({ account: null, index: -1 })}>
+            <button className="icon-btn toolbar-btn toolbar-btn-add" title={t("account.add")} onClick={() => setEditing({ account: null, index: -1 })}>
               <img src={addIcon} alt="" aria-hidden="true" width={26} height={26} />
               <span className="toolbar-btn-label">{t("account.add")}</span>
             </button>
-            <button className="icon-btn toolbar-btn" title={t("account.edit")} onClick={onEdit}>
+            <button className="icon-btn toolbar-btn toolbar-btn-edit" title={t("account.edit")} onClick={onEdit}>
               <img src={editIcon} alt="" aria-hidden="true" width={26} height={26} />
               <span className="toolbar-btn-label">{t("account.edit")}</span>
             </button>
-            <button className="icon-btn toolbar-btn" title={t("account.delete")} onClick={onDelete}>
+            <button className="icon-btn toolbar-btn toolbar-btn-delete" title={t("account.delete")} onClick={onDelete}>
               <img src={deleteIcon} alt="" aria-hidden="true" width={26} height={26} />
               <span className="toolbar-btn-label">{t("account.delete")}</span>
             </button>
