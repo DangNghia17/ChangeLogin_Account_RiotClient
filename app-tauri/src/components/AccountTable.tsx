@@ -4,11 +4,12 @@ import { useI18n } from "../i18n/I18nContext";
 interface Props {
   accounts: Account[];
   selected: number;
+  loggedInUsername?: string | null;
   onSelect: (index: number) => void;
   onLogin: (index: number) => void;
 }
 
-export function AccountTable({ accounts, selected, onSelect, onLogin }: Props) {
+export function AccountTable({ accounts, selected, loggedInUsername, onSelect, onLogin }: Props) {
   const { t } = useI18n();
 
   return (
@@ -34,7 +35,12 @@ export function AccountTable({ accounts, selected, onSelect, onLogin }: Props) {
                 onClick={() => onSelect(i)}
                 onDoubleClick={() => onLogin(i)}
               >
-                <td>{a.username}</td>
+                <td>
+                  {a.username}
+                  {loggedInUsername && a.username === loggedInUsername && (
+                    <span className="row-badge">{t("account.badge.loggedIn")}</span>
+                  )}
+                </td>
                 <td>{a.region}</td>
                 <td>{a.note}</td>
               </tr>

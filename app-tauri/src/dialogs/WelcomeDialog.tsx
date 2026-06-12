@@ -17,15 +17,26 @@ export function WelcomeDialog({ onClose }: Props) {
     t("app.welcome.instruction5"),
   ];
 
+  const notes = [t("app.welcome.note1"), t("app.welcome.note2")];
+
   return (
     <div className="modal-overlay" onMouseDown={() => onClose(dontShow)}>
       <div className="modal modal-wide" onMouseDown={(e) => e.stopPropagation()}>
         <h2 className="modal-title center">{t("app.welcome.title")}</h2>
+        <p className="welcome-subtitle">{t("app.welcome.subtitle")}</p>
         <ul className="welcome-list">
           {instructions.map((line, i) => (
             <li key={i}>{line}</li>
           ))}
         </ul>
+        <div className="welcome-notes">
+          <div className="welcome-notes-title">{t("app.welcome.notes.title")}</div>
+          <ul className="welcome-notes-list">
+            {notes.map((line, i) => (
+              <li key={i}>{line}</li>
+            ))}
+          </ul>
+        </div>
         <div className="modal-actions space-between">
           <label className="checkbox-inline">
             <input type="checkbox" checked={dontShow} onChange={(e) => setDontShow(e.target.checked)} />
